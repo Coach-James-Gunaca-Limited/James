@@ -1,0 +1,21 @@
+{
+  "name": "jamesgunaca-testimonials",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Notion-backed testimonial migration, JSON publisher and Wall of Love widget for jamesgunaca.com. No runtime dependencies.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "migrate:dry": "node migrate-media.mjs --dry-run",
+    "migrate:download": "node migrate-media.mjs --download",
+    "migrate:apply": "node migrate-media.mjs --apply",
+    "publish:dry": "node publish-json.mjs --dry-run",
+    "publish": "node publish-json.mjs",
+    "test:browser": "node ../../widgets/test/browser.test.mjs",
+    "preview": "npx --yes http-server ../.. -p 8099",
+    "verify:mapping": "node verify-mapping.mjs"
+  }
+}

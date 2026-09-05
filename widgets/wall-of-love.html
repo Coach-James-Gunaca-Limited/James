@@ -1,0 +1,627 @@
+<!--
+  Wall of Love — jamesgunaca.com
+  Paste this whole file into a Squarespace Code Block.
+
+  Everything is namespaced `jg-wol`. There are no global CSS selectors and no
+  globals beyond window.JgWallOfLove, so nothing here can affect the rest of the
+  Squarespace template.
+
+  Per-block configuration, no code edit required:
+      <div data-jg-wol data-initial="6" data-batch="6"></div>
+
+  Site-wide defaults can be set before this block loads:
+      <script>window.JG_WOL_CONFIG = { initialCount: 12 };</script>
+-->
+
+<div
+  data-jg-wol
+  data-initial="24"
+  data-batch="12"
+></div>
+
+<style>
+/* Every rule is scoped under .jg-wol. Custom properties are declared on the
+   component root rather than :root so they cannot leak into Squarespace. */
+.jg-wol {
+  --jg-wol-accent: #1B2CC2;
+  --jg-wol-text: #2B2D35;
+  --jg-wol-muted: #6B7280;
+  --jg-wol-surface: #FFFFFF;
+  --jg-wol-page: #F6F8FC;
+  --jg-wol-border: #E8ECF3;
+  --jg-wol-radius: 14px;
+  --jg-wol-gap: 20px;
+  --jg-wol-min-card: 300px;
+  --jg-wol-font-head: 'nohemi-3qocai', 'Nohemi', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --jg-wol-font-body: 'plus-jakarta-sans-rdo6u5', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  font-family: var(--jg-wol-font-body);
+  color: var(--jg-wol-text);
+  line-height: 1.55;
+  container-type: inline-size;
+}
+
+.jg-wol *,
+.jg-wol *::before,
+.jg-wol *::after { box-sizing: border-box; }
+
+.jg-wol__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--jg-wol-min-card), 1fr));
+  gap: var(--jg-wol-gap);
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jg-wol__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--jg-wol-surface);
+  border: 1px solid var(--jg-wol-border);
+  border-radius: var(--jg-wol-radius);
+  padding: 22px;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.jg-wol__card:hover,
+.jg-wol__card:focus-within {
+  border-color: color-mix(in srgb, var(--jg-wol-accent) 35%, var(--jg-wol-border));
+  box-shadow: 0 6px 20px -12px color-mix(in srgb, var(--jg-wol-accent) 55%, transparent);
+  transform: translateY(-2px);
+}
+
+.jg-wol__card--featured {
+  border-color: color-mix(in srgb, var(--jg-wol-accent) 45%, var(--jg-wol-border));
+  box-shadow: inset 3px 0 0 0 var(--jg-wol-accent);
+}
+
+.jg-wol__badge {
+  align-self: flex-start;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--jg-wol-accent);
+  background: color-mix(in srgb, var(--jg-wol-accent) 9%, transparent);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* Quote ------------------------------------------------------------------ */
+.jg-wol__quote { margin: 0; }
+
+.jg-wol__text {
+  margin: 0;
+  font-size: .95rem;
+  white-space: pre-line;      /* keep author line breaks, still plain text */
+  overflow-wrap: anywhere;
+}
+
+.jg-wol__text--clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 12;
+  line-clamp: 12;
+  overflow: hidden;
+}
+
+.jg-wol__more {
+  align-self: flex-start;
+  margin-top: -4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--jg-wol-accent);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Attached image --------------------------------------------------------- */
+.jg-wol__shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--jg-wol-border);
+  background: var(--jg-wol-page);
+}
+
+/* Attribution ------------------------------------------------------------ */
+.jg-wol__by {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.jg-wol__avatar,
+.jg-wol__monogram {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--jg-wol-page);
+  border: 1px solid var(--jg-wol-border);
+}
+
+.jg-wol__monogram {
+  display: grid;
+  place-items: center;
+  font-family: var(--jg-wol-font-head);
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--jg-wol-accent);
+  background: color-mix(in srgb, var(--jg-wol-accent) 9%, var(--jg-wol-surface));
+  border-color: color-mix(in srgb, var(--jg-wol-accent) 18%, var(--jg-wol-border));
+}
+
+.jg-wol__who { min-width: 0; }
+
+.jg-wol__name {
+  font-family: var(--jg-wol-font-head);
+  font-weight: 600;
+  font-size: .93rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.jg-wol__meta {
+  font-size: .82rem;
+  color: var(--jg-wol-muted);
+  overflow-wrap: anywhere;
+}
+
+.jg-wol__link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.jg-wol__link:hover,
+.jg-wol__link:focus-visible { color: var(--jg-wol-accent); border-bottom-color: currentColor; }
+
+/* Controls and states ---------------------------------------------------- */
+.jg-wol__foot { margin-top: 26px; text-align: center; }
+
+.jg-wol__btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: .92rem;
+  color: var(--jg-wol-surface);
+  background: var(--jg-wol-accent);
+  border: 1px solid var(--jg-wol-accent);
+  border-radius: 999px;
+  padding: 11px 26px;
+  cursor: pointer;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.jg-wol__btn:hover { opacity: .9; }
+.jg-wol__btn:active { transform: translateY(1px); }
+.jg-wol__btn[hidden] { display: none; }
+
+.jg-wol__btn--ghost {
+  color: var(--jg-wol-accent);
+  background: transparent;
+}
+
+/* A visible focus ring on every interactive element, in the brand accent. */
+.jg-wol :is(button, a):focus-visible {
+  outline: 2px solid var(--jg-wol-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.jg-wol__note {
+  border: 1px dashed var(--jg-wol-border);
+  border-radius: var(--jg-wol-radius);
+  padding: 34px 20px;
+  text-align: center;
+  color: var(--jg-wol-muted);
+  font-size: .93rem;
+}
+.jg-wol__note p { margin: 0 0 12px; }
+.jg-wol__note p:last-child { margin-bottom: 0; }
+
+/* Loading skeleton */
+.jg-wol__skeleton {
+  border: 1px solid var(--jg-wol-border);
+  border-radius: var(--jg-wol-radius);
+  background: linear-gradient(100deg, var(--jg-wol-page) 30%, var(--jg-wol-surface) 50%, var(--jg-wol-page) 70%);
+  background-size: 220% 100%;
+  animation: jg-wol-shimmer 1.4s ease-in-out infinite;
+  min-height: 168px;
+}
+@keyframes jg-wol-shimmer {
+  from { background-position: 180% 0; }
+  to   { background-position: -80% 0; }
+}
+
+/* Screen-reader-only, scoped so it cannot collide with Squarespace's own. */
+.jg-wol__sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jg-wol *,
+  .jg-wol *::before,
+  .jg-wol *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .jg-wol__card:hover { transform: none; }
+}
+
+@media (max-width: 600px) {
+  .jg-wol { --jg-wol-min-card: 240px; --jg-wol-gap: 16px; }
+  .jg-wol__card { padding: 18px; }
+}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var DEFAULTS = {
+    endpoint: 'https://media.jamesgunaca.com/testimonials/approved.json',
+    initialCount: 24,
+    batchSize: 12,
+    // 'hourly' lets the CDN cache the feed within the hour while guaranteeing a
+    // refresh after moderation changes. 'none' caches normally; 'always' bypasses.
+    cacheBusting: 'hourly',
+    clampLines: 12,
+    label: 'What people say about working with James',
+    emptyMessage: 'No testimonials to show just yet.',
+    errorMessage: 'Testimonials could not be loaded right now.',
+    theme: {}
+  };
+
+  /* ---------------------------------------------------------------- utils */
+
+  /** Build an element. Text is always assigned via textContent, never HTML. */
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null && text !== '') node.textContent = String(text);
+    return node;
+  }
+
+  /**
+   * Only http(s) URLs are ever emitted. This is what stops a `javascript:` or
+   * `data:` value in Notion from becoming a live link or image source.
+   */
+  function safeUrl(value) {
+    if (typeof value !== 'string') return null;
+    var trimmed = value.trim();
+    if (!trimmed) return null;
+    try {
+      var url = new URL(trimmed, window.location.href);
+      return (url.protocol === 'http:' || url.protocol === 'https:') ? url.href : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function text(value) {
+    return (typeof value === 'string' && value.trim()) ? value.trim() : null;
+  }
+
+  /**
+   * Up to two initials for the avatar fallback. Punctuation is stripped first,
+   * so a name field containing markup yields a dash rather than "<O".
+   */
+  function initials(name) {
+    var parts = String(name || '')
+      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    if (!parts.length) return '—';
+    var first = parts[0].charAt(0);
+    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+    return (first + last).toUpperCase();
+  }
+
+  function endpointUrl(config) {
+    if (config.cacheBusting === 'none') return config.endpoint;
+    var stamp = config.cacheBusting === 'always'
+      ? String(Date.now())
+      : new Date().toISOString().slice(0, 13).replace(/[-T]/g, ''); // YYYYMMDDHH
+    return config.endpoint + (config.endpoint.indexOf('?') === -1 ? '?' : '&') + 'v=' + stamp;
+  }
+
+  function readConfig(mount) {
+    var config = {};
+    var key;
+    for (key in DEFAULTS) if (Object.prototype.hasOwnProperty.call(DEFAULTS, key)) config[key] = DEFAULTS[key];
+
+    var global = window.JG_WOL_CONFIG;
+    if (global && typeof global === 'object') {
+      for (key in global) if (Object.prototype.hasOwnProperty.call(global, key)) config[key] = global[key];
+    }
+
+    // Per-block data attributes win, so one pasted widget serves both the
+    // homepage (a short teaser) and /testimonials (the full wall).
+    var data = mount.dataset;
+    if (data.endpoint) config.endpoint = data.endpoint;
+    if (data.initial) config.initialCount = parseInt(data.initial, 10) || config.initialCount;
+    if (data.batch) config.batchSize = parseInt(data.batch, 10) || config.batchSize;
+    if (data.label) config.label = data.label;
+    if (data.cacheBusting) config.cacheBusting = data.cacheBusting;
+
+    config.initialCount = Math.max(1, config.initialCount);
+    config.batchSize = Math.max(1, config.batchSize);
+    return config;
+  }
+
+  function applyTheme(root, theme) {
+    if (!theme) return;
+    var map = {
+      accent: '--jg-wol-accent', text: '--jg-wol-text', muted: '--jg-wol-muted',
+      surface: '--jg-wol-surface', page: '--jg-wol-page', border: '--jg-wol-border',
+      radius: '--jg-wol-radius', gap: '--jg-wol-gap', minCardWidth: '--jg-wol-min-card',
+      fontHeading: '--jg-wol-font-head', fontBody: '--jg-wol-font-body'
+    };
+    Object.keys(map).forEach(function (key) {
+      if (typeof theme[key] === 'string' && theme[key]) root.style.setProperty(map[key], theme[key]);
+    });
+  }
+
+  /* ----------------------------------------------------------------- card */
+
+  function buildCard(record, config) {
+    var item = el('li', 'jg-wol__card' + (record.featured ? ' jg-wol__card--featured' : ''));
+    var figure = el('figure', 'jg-wol__quote');
+    figure.style.margin = '0';
+    figure.style.display = 'contents';
+
+    if (record.featured) figure.appendChild(el('span', 'jg-wol__badge', 'Featured'));
+
+    var message = text(record.message);
+    if (message) {
+      var quote = el('blockquote', 'jg-wol__quote');
+      quote.style.margin = '0';
+      var body = el('p', 'jg-wol__text', message);
+      quote.appendChild(body);
+      figure.appendChild(quote);
+
+      // Only offer "Show more" when the text is genuinely clipped.
+      body.classList.add('jg-wol__text--clamped');
+      var toggle = el('button', 'jg-wol__more', 'Show more');
+      toggle.type = 'button';
+      toggle.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.addEventListener('click', function () {
+        var expanded = body.classList.toggle('jg-wol__text--clamped') === false;
+        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.textContent = expanded ? 'Show less' : 'Show more';
+      });
+      figure.appendChild(toggle);
+
+      requestAnimationFrame(function () {
+        if (body.scrollHeight - body.clientHeight > 4) toggle.hidden = false;
+        else body.classList.remove('jg-wol__text--clamped');
+      });
+    }
+
+    var shot = safeUrl(record.attachedImageUrl);
+    if (shot) {
+      var image = el('img', 'jg-wol__shot');
+      image.src = shot;
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      // The screenshot IS the testimonial when there is no message text.
+      image.alt = message
+        ? 'Screenshot shared by ' + (text(record.name) || 'this client')
+        : 'Testimonial screenshot from ' + (text(record.name) || 'a client');
+      image.addEventListener('error', function () { image.remove(); });
+      figure.appendChild(image);
+    }
+
+    /* Attribution */
+    var caption = el('figcaption', 'jg-wol__by');
+    var avatar = safeUrl(record.avatarUrl);
+    var name = text(record.name);
+
+    if (avatar) {
+      var img = el('img', 'jg-wol__avatar');
+      img.src = avatar;
+      img.alt = '';                 // decorative: the name is adjacent text
+      img.setAttribute('aria-hidden', 'true');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.width = 40;
+      img.height = 40;
+      // Fall back to the monogram rather than showing a broken image.
+      img.addEventListener('error', function () {
+        var fallback = el('span', 'jg-wol__monogram', initials(name));
+        fallback.setAttribute('aria-hidden', 'true');
+        if (img.parentNode) img.parentNode.replaceChild(fallback, img);
+      });
+      caption.appendChild(img);
+    } else {
+      var mono = el('span', 'jg-wol__monogram', initials(name));
+      mono.setAttribute('aria-hidden', 'true');
+      caption.appendChild(mono);
+    }
+
+    var who = el('div', 'jg-wol__who');
+    var social = safeUrl(record.socialLink);
+    var nameNode;
+    if (name && social) {
+      nameNode = el('a', 'jg-wol__name jg-wol__link', name);
+      nameNode.href = social;
+      nameNode.target = '_blank';
+      nameNode.rel = 'noopener noreferrer nofollow';
+      var hint = el('span', 'jg-wol__sr', ' (opens in a new tab)');
+      nameNode.appendChild(hint);
+    } else {
+      nameNode = el('div', 'jg-wol__name', name || 'Anonymous');
+    }
+    who.appendChild(nameNode);
+
+    // Role and company are independently optional; join only what exists.
+    // Many imported rows carry the employer in both fields ("Lead PM @ Acme"
+    // plus company "Acme"), which would render as "Lead PM @ Acme · Acme".
+    // Drop the repetition rather than print it twice; once the Notion data is
+    // tidied this rule simply stops matching.
+    var role = text(record.roleTitle);
+    var company = text(record.company);
+    if (role && company && role.toLowerCase().indexOf(company.toLowerCase()) !== -1) company = null;
+    var meta = [role, company].filter(Boolean).join(' · ');
+    if (meta) who.appendChild(el('div', 'jg-wol__meta', meta));
+
+    caption.appendChild(who);
+    figure.appendChild(caption);
+    item.appendChild(figure);
+    return item;
+  }
+
+  /* ---------------------------------------------------------------- mount */
+
+  function mountWidget(mount) {
+    if (mount.getAttribute('data-jg-wol-ready') === 'true') return;
+    mount.setAttribute('data-jg-wol-ready', 'true');
+
+    var config = readConfig(mount);
+    mount.classList.add('jg-wol');
+    applyTheme(mount, config.theme);
+
+    var section = el('section');
+    section.setAttribute('aria-label', config.label);
+    mount.appendChild(section);
+
+    var status = el('div', 'jg-wol__sr');
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    section.appendChild(status);
+
+    var grid = el('ul', 'jg-wol__grid');
+    section.appendChild(grid);
+
+    var foot = el('div', 'jg-wol__foot');
+    section.appendChild(foot);
+
+    function showSkeletons() {
+      grid.textContent = '';
+      for (var i = 0; i < Math.min(6, config.initialCount); i += 1) {
+        var placeholder = el('li', 'jg-wol__skeleton');
+        placeholder.setAttribute('aria-hidden', 'true');
+        grid.appendChild(placeholder);
+      }
+      status.textContent = 'Loading testimonials…';
+    }
+
+    function showNote(message, actionLabel, onAction) {
+      grid.textContent = '';
+      foot.textContent = '';
+      var note = el('div', 'jg-wol__note');
+      note.appendChild(el('p', null, message));
+      if (actionLabel) {
+        var button = el('button', 'jg-wol__btn jg-wol__btn--ghost', actionLabel);
+        button.type = 'button';
+        button.addEventListener('click', onAction);
+        note.appendChild(button);
+      }
+      grid.appendChild(note);
+      status.textContent = message;
+    }
+
+    var all = [];
+    var shown = 0;
+
+    function renderNext(count) {
+      // The feed is already ordered (featured first, then newest). Rendering the
+      // next slice as-is is what keeps the widget's order identical to the JSON.
+      var slice = all.slice(shown, shown + count);
+      var fragment = document.createDocumentFragment();
+      slice.forEach(function (record) { fragment.appendChild(buildCard(record, config)); });
+      grid.appendChild(fragment);
+
+      var firstNew = shown;
+      shown += slice.length;
+      updateFooter();
+      status.textContent = 'Showing ' + shown + ' of ' + all.length + ' testimonials.';
+      return grid.children[firstNew] || null;
+    }
+
+    function updateFooter() {
+      foot.textContent = '';
+      if (shown >= all.length) return;                 // hide when all are visible
+      var remaining = all.length - shown;
+      var next = Math.min(config.batchSize, remaining);
+      var button = el('button', 'jg-wol__btn', 'Load more');
+      button.type = 'button';
+      button.appendChild(el('span', 'jg-wol__sr', ' testimonials (' + next + ' more, ' + remaining + ' remaining)'));
+      button.addEventListener('click', function () {
+        var firstAdded = renderNext(config.batchSize);
+        // Move focus to the first new card so keyboard users are not dropped
+        // back at the top of the list.
+        if (firstAdded) {
+          firstAdded.setAttribute('tabindex', '-1');
+          firstAdded.focus({ preventScroll: true });
+        }
+      });
+      foot.appendChild(button);
+    }
+
+    function load() {
+      showSkeletons();
+      // Fetched exactly once; "Load more" only reveals what is already in memory.
+      fetch(endpointUrl(config), { credentials: 'omit', mode: 'cors' })
+        .then(function (response) {
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          return response.json();
+        })
+        .then(function (feed) {
+          var records = feed && Array.isArray(feed.testimonials) ? feed.testimonials : null;
+          if (!records) throw new Error('unexpected feed shape');
+
+          all = records;
+          shown = 0;
+          grid.textContent = '';
+
+          if (!all.length) {
+            showNote(config.emptyMessage);
+            return;
+          }
+          renderNext(config.initialCount);
+        })
+        .catch(function (error) {
+          if (window.console && console.warn) console.warn('[jg-wol] ' + error.message);
+          showNote(config.errorMessage, 'Try again', load);
+        });
+    }
+
+    load();
+  }
+
+  function init() {
+    var mounts = document.querySelectorAll('[data-jg-wol]');
+    Array.prototype.forEach.call(mounts, mountWidget);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // Exposed so Squarespace's AJAX page transitions can re-scan for new blocks.
+  window.JgWallOfLove = { init: init };
+})();
+</script>
