@@ -286,8 +286,8 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
     document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check('mobile (390px): no horizontal overflow', overflow <= 0, `overflow ${overflow}px`);
   const cols = await page.evaluate(() =>
-    getComputedStyle(document.querySelector('.jg-wol__grid')).gridTemplateColumns.split(' ').length);
-  check('mobile: grid collapses to a single column', cols === 1, `${cols} column(s)`);
+    Number(getComputedStyle(document.querySelector('.jg-wol__grid')).columnCount));
+  check('mobile: masonry collapses to a single column', cols === 1, `${cols} column(s)`);
   const tap = await page.evaluate(() => {
     const b = document.querySelector('.jg-wol__btn');
     return b ? b.getBoundingClientRect().height : 0;

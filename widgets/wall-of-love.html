@@ -23,79 +23,106 @@
 /* Every rule is scoped under .jg-wol. Custom properties are declared on the
    component root rather than :root so they cannot leak into Squarespace. */
 .jg-wol {
-  --jg-wol-accent: #1B2CC2;
-  --jg-wol-text: #2B2D35;
+  --jg-wol-card: #D8E0EB;          /* Stone */
+  --jg-wol-text: #2B2D35;          /* Midnight */
   --jg-wol-muted: #6B7280;
-  --jg-wol-surface: #FFFFFF;
-  --jg-wol-page: #F6F8FC;
-  --jg-wol-border: #E8ECF3;
-  --jg-wol-radius: 14px;
+  --jg-wol-accent: #1B2CC2;        /* Persian */
+  --jg-wol-radius: 12px;
   --jg-wol-gap: 20px;
-  --jg-wol-min-card: 300px;
-  --jg-wol-font-head: 'nohemi-3qocai', 'Nohemi', 'Plus Jakarta Sans', system-ui, sans-serif;
-  --jg-wol-font-body: 'plus-jakarta-sans-rdo6u5', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --jg-wol-col: 320px;
+
+  --jg-wol-font-head: 'nohemi-3qocai', 'Nohemi', system-ui, sans-serif;
+  --jg-wol-font-quote: 'working-1sjdck', 'Working', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --jg-wol-font-body: 'plus-jakarta-sans-rdo6u5', 'Plus Jakarta Sans', system-ui, sans-serif;
 
   font-family: var(--jg-wol-font-body);
   color: var(--jg-wol-text);
   line-height: 1.55;
-  container-type: inline-size;
 }
 
 .jg-wol *,
 .jg-wol *::before,
 .jg-wol *::after { box-sizing: border-box; }
 
+/* Masonry. CSS columns let each card keep its natural height and the next card
+   pull up into the gap, instead of every card in a row stretching to match the
+   tallest one. */
 .jg-wol__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--jg-wol-min-card), 1fr));
-  gap: var(--jg-wol-gap);
-  align-items: start;
+  columns: var(--jg-wol-col);
+  column-gap: var(--jg-wol-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .jg-wol__card {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  background: var(--jg-wol-surface);
-  border: 1px solid var(--jg-wol-border);
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;      /* older WebKit */
+  display: block;
+  margin: 0 0 var(--jg-wol-gap);
+  background: var(--jg-wol-card);
+  border: 0;
   border-radius: var(--jg-wol-radius);
   padding: 22px;
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
-.jg-wol__card:hover,
-.jg-wol__card:focus-within {
-  border-color: color-mix(in srgb, var(--jg-wol-accent) 35%, var(--jg-wol-border));
-  box-shadow: 0 6px 20px -12px color-mix(in srgb, var(--jg-wol-accent) 55%, transparent);
-  transform: translateY(-2px);
+.jg-wol__figure { margin: 0; }
+
+/* Attribution — first in the card, so the person leads. */
+.jg-wol__by {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
 }
 
-.jg-wol__card--featured {
-  border-color: color-mix(in srgb, var(--jg-wol-accent) 45%, var(--jg-wol-border));
-  box-shadow: inset 3px 0 0 0 var(--jg-wol-accent);
+.jg-wol__avatar,
+.jg-wol__monogram {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.jg-wol__badge {
-  align-self: flex-start;
-  font-size: .68rem;
+.jg-wol__monogram {
+  display: grid;
+  place-items: center;
+  font-family: var(--jg-wol-font-head);
+  font-size: .9rem;
   font-weight: 600;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: var(--jg-wol-accent);
-  background: color-mix(in srgb, var(--jg-wol-accent) 9%, transparent);
-  border-radius: 999px;
-  padding: 3px 10px;
+  color: #FFFFFF;
+  background: var(--jg-wol-accent);
 }
 
-/* Quote ------------------------------------------------------------------ */
+.jg-wol__who { min-width: 0; }
+
+.jg-wol__name {
+  font-family: var(--jg-wol-font-head);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.jg-wol__meta {
+  font-family: var(--jg-wol-font-head);
+  font-weight: 400;
+  font-size: .85rem;
+  line-height: 1.3;
+  color: var(--jg-wol-muted);
+  overflow-wrap: anywhere;
+}
+
+/* Quote */
 .jg-wol__quote { margin: 0; }
 
 .jg-wol__text {
   margin: 0;
-  font-size: .95rem;
+  font-family: var(--jg-wol-font-quote);
+  font-size: 1rem;
+  line-height: 1.6;
   white-space: pre-line;      /* keep author line breaks, still plain text */
   overflow-wrap: anywhere;
 }
@@ -109,12 +136,12 @@
 }
 
 .jg-wol__more {
-  align-self: flex-start;
-  margin-top: -4px;
+  display: inline-block;
+  margin-top: 8px;
   padding: 0;
   border: 0;
   background: none;
-  font: inherit;
+  font-family: var(--jg-wol-font-head);
   font-size: .85rem;
   font-weight: 600;
   color: var(--jg-wol-accent);
@@ -123,88 +150,35 @@
   text-underline-offset: 3px;
 }
 
-/* Attached image --------------------------------------------------------- */
 .jg-wol__shot {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 10px;
-  border: 1px solid var(--jg-wol-border);
-  background: var(--jg-wol-page);
-}
-
-/* Attribution ------------------------------------------------------------ */
-.jg-wol__by {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: auto;
-  padding-top: 4px;
-}
-
-.jg-wol__avatar,
-.jg-wol__monogram {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--jg-wol-page);
-  border: 1px solid var(--jg-wol-border);
-}
-
-.jg-wol__monogram {
-  display: grid;
-  place-items: center;
-  font-family: var(--jg-wol-font-head);
-  font-size: .85rem;
-  font-weight: 600;
-  color: var(--jg-wol-accent);
-  background: color-mix(in srgb, var(--jg-wol-accent) 9%, var(--jg-wol-surface));
-  border-color: color-mix(in srgb, var(--jg-wol-accent) 18%, var(--jg-wol-border));
-}
-
-.jg-wol__who { min-width: 0; }
-
-.jg-wol__name {
-  font-family: var(--jg-wol-font-head);
-  font-weight: 600;
-  font-size: .93rem;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
-}
-
-.jg-wol__meta {
-  font-size: .82rem;
-  color: var(--jg-wol-muted);
-  overflow-wrap: anywhere;
+  margin-top: 14px;
+  border-radius: 8px;
 }
 
 .jg-wol__link {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
 }
 .jg-wol__link:hover,
-.jg-wol__link:focus-visible { color: var(--jg-wol-accent); border-bottom-color: currentColor; }
+.jg-wol__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 
-/* Controls and states ---------------------------------------------------- */
+/* Controls and states */
 .jg-wol__foot { margin-top: 26px; text-align: center; }
 
 .jg-wol__btn {
-  font: inherit;
-  font-weight: 600;
-  font-size: .92rem;
-  color: var(--jg-wol-surface);
+  font-family: var(--jg-wol-font-head);
+  font-weight: 700;
+  font-size: .95rem;
+  color: #FFFFFF;
   background: var(--jg-wol-accent);
-  border: 1px solid var(--jg-wol-accent);
+  border: 0;
   border-radius: 999px;
-  padding: 11px 26px;
+  padding: 12px 28px;
   cursor: pointer;
-  transition: opacity .18s ease, transform .18s ease;
 }
-.jg-wol__btn:hover { opacity: .9; }
-.jg-wol__btn:active { transform: translateY(1px); }
 .jg-wol__btn[hidden] { display: none; }
 
 .jg-wol__btn--ghost {
@@ -212,7 +186,6 @@
   background: transparent;
 }
 
-/* A visible focus ring on every interactive element, in the brand accent. */
 .jg-wol :is(button, a):focus-visible {
   outline: 2px solid var(--jg-wol-accent);
   outline-offset: 3px;
@@ -220,28 +193,23 @@
 }
 
 .jg-wol__note {
-  border: 1px dashed var(--jg-wol-border);
   border-radius: var(--jg-wol-radius);
+  background: var(--jg-wol-card);
   padding: 34px 20px;
   text-align: center;
   color: var(--jg-wol-muted);
-  font-size: .93rem;
+  font-size: .95rem;
 }
 .jg-wol__note p { margin: 0 0 12px; }
 .jg-wol__note p:last-child { margin-bottom: 0; }
 
-/* Loading skeleton */
 .jg-wol__skeleton {
-  border: 1px solid var(--jg-wol-border);
+  break-inside: avoid;
+  margin: 0 0 var(--jg-wol-gap);
   border-radius: var(--jg-wol-radius);
-  background: linear-gradient(100deg, var(--jg-wol-page) 30%, var(--jg-wol-surface) 50%, var(--jg-wol-page) 70%);
-  background-size: 220% 100%;
-  animation: jg-wol-shimmer 1.4s ease-in-out infinite;
+  background: var(--jg-wol-card);
+  opacity: .55;
   min-height: 168px;
-}
-@keyframes jg-wol-shimmer {
-  from { background-position: 180% 0; }
-  to   { background-position: -80% 0; }
 }
 
 /* Screen-reader-only, scoped so it cannot collide with Squarespace's own. */
@@ -255,19 +223,8 @@
   border: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .jg-wol *,
-  .jg-wol *::before,
-  .jg-wol *::after {
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
-  }
-  .jg-wol__card:hover { transform: none; }
-}
-
 @media (max-width: 600px) {
-  .jg-wol { --jg-wol-min-card: 240px; --jg-wol-gap: 16px; }
+  .jg-wol { --jg-wol-col: 240px; --jg-wol-gap: 16px; }
   .jg-wol__card { padding: 18px; }
 }
 </style>
@@ -283,8 +240,8 @@
     // 'hourly' lets the CDN cache the feed within the hour while guaranteeing a
     // refresh after moderation changes. 'none' caches normally; 'always' bypasses.
     cacheBusting: 'hourly',
-    clampLines: 12,
     label: 'What people say about working with James',
+    loadMoreLabel: 'load more',
     emptyMessage: 'No testimonials to show just yet.',
     errorMessage: 'Testimonials could not be loaded right now.',
     theme: {}
@@ -371,10 +328,11 @@
   function applyTheme(root, theme) {
     if (!theme) return;
     var map = {
-      accent: '--jg-wol-accent', text: '--jg-wol-text', muted: '--jg-wol-muted',
-      surface: '--jg-wol-surface', page: '--jg-wol-page', border: '--jg-wol-border',
-      radius: '--jg-wol-radius', gap: '--jg-wol-gap', minCardWidth: '--jg-wol-min-card',
-      fontHeading: '--jg-wol-font-head', fontBody: '--jg-wol-font-body'
+      card: '--jg-wol-card', text: '--jg-wol-text', muted: '--jg-wol-muted',
+      accent: '--jg-wol-accent', radius: '--jg-wol-radius', gap: '--jg-wol-gap',
+      columnWidth: '--jg-wol-col',
+      fontHeading: '--jg-wol-font-head', fontQuote: '--jg-wol-font-quote',
+      fontBody: '--jg-wol-font-body'
     };
     Object.keys(map).forEach(function (key) {
       if (typeof theme[key] === 'string' && theme[key]) root.style.setProperty(map[key], theme[key]);
@@ -384,13 +342,63 @@
   /* ----------------------------------------------------------------- card */
 
   function buildCard(record, config) {
-    var item = el('li', 'jg-wol__card' + (record.featured ? ' jg-wol__card--featured' : ''));
-    var figure = el('figure', 'jg-wol__quote');
-    figure.style.margin = '0';
-    figure.style.display = 'contents';
+    var item = el('li', 'jg-wol__card');
+    var figure = el('figure', 'jg-wol__figure');
 
-    if (record.featured) figure.appendChild(el('span', 'jg-wol__badge', 'Featured'));
+    /* Attribution first: the person leads the card. */
+    var caption = el('figcaption', 'jg-wol__by');
+    var avatar = safeUrl(record.avatarUrl);
+    var name = text(record.name);
 
+    if (avatar) {
+      var img = el('img', 'jg-wol__avatar');
+      img.src = avatar;
+      img.alt = '';                 // decorative: the name is adjacent text
+      img.setAttribute('aria-hidden', 'true');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.width = 44;
+      img.height = 44;
+      // Fall back to the monogram rather than showing a broken image.
+      img.addEventListener('error', function () {
+        var fallback = el('span', 'jg-wol__monogram', initials(name));
+        fallback.setAttribute('aria-hidden', 'true');
+        if (img.parentNode) img.parentNode.replaceChild(fallback, img);
+      });
+      caption.appendChild(img);
+    } else {
+      var mono = el('span', 'jg-wol__monogram', initials(name));
+      mono.setAttribute('aria-hidden', 'true');
+      caption.appendChild(mono);
+    }
+
+    var who = el('div', 'jg-wol__who');
+    var social = safeUrl(record.socialLink);
+    var nameNode;
+    if (name && social) {
+      nameNode = el('a', 'jg-wol__name jg-wol__link', name);
+      nameNode.href = social;
+      nameNode.target = '_blank';
+      nameNode.rel = 'noopener noreferrer nofollow';
+      nameNode.appendChild(el('span', 'jg-wol__sr', ' (opens in a new tab)'));
+    } else {
+      nameNode = el('div', 'jg-wol__name', name || 'Anonymous');
+    }
+    who.appendChild(nameNode);
+
+    // Role and company are independently optional. Many imported rows carry the
+    // employer in both fields ("Lead PM @ Acme" plus company "Acme"), which
+    // would render as "Lead PM @ Acme · Acme"; print it once instead.
+    var role = text(record.roleTitle);
+    var company = text(record.company);
+    if (role && company && role.toLowerCase().indexOf(company.toLowerCase()) !== -1) company = null;
+    var meta = [role, company].filter(Boolean).join(' · ');
+    if (meta) who.appendChild(el('div', 'jg-wol__meta', meta));
+
+    caption.appendChild(who);
+    figure.appendChild(caption);
+
+    /* Quote */
     var message = text(record.message);
     if (message) {
       var quote = el('blockquote', 'jg-wol__quote');
@@ -426,67 +434,12 @@
       image.decoding = 'async';
       // The screenshot IS the testimonial when there is no message text.
       image.alt = message
-        ? 'Screenshot shared by ' + (text(record.name) || 'this client')
-        : 'Testimonial screenshot from ' + (text(record.name) || 'a client');
+        ? 'Screenshot shared by ' + (name || 'this client')
+        : 'Testimonial screenshot from ' + (name || 'a client');
       image.addEventListener('error', function () { image.remove(); });
       figure.appendChild(image);
     }
 
-    /* Attribution */
-    var caption = el('figcaption', 'jg-wol__by');
-    var avatar = safeUrl(record.avatarUrl);
-    var name = text(record.name);
-
-    if (avatar) {
-      var img = el('img', 'jg-wol__avatar');
-      img.src = avatar;
-      img.alt = '';                 // decorative: the name is adjacent text
-      img.setAttribute('aria-hidden', 'true');
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.width = 40;
-      img.height = 40;
-      // Fall back to the monogram rather than showing a broken image.
-      img.addEventListener('error', function () {
-        var fallback = el('span', 'jg-wol__monogram', initials(name));
-        fallback.setAttribute('aria-hidden', 'true');
-        if (img.parentNode) img.parentNode.replaceChild(fallback, img);
-      });
-      caption.appendChild(img);
-    } else {
-      var mono = el('span', 'jg-wol__monogram', initials(name));
-      mono.setAttribute('aria-hidden', 'true');
-      caption.appendChild(mono);
-    }
-
-    var who = el('div', 'jg-wol__who');
-    var social = safeUrl(record.socialLink);
-    var nameNode;
-    if (name && social) {
-      nameNode = el('a', 'jg-wol__name jg-wol__link', name);
-      nameNode.href = social;
-      nameNode.target = '_blank';
-      nameNode.rel = 'noopener noreferrer nofollow';
-      var hint = el('span', 'jg-wol__sr', ' (opens in a new tab)');
-      nameNode.appendChild(hint);
-    } else {
-      nameNode = el('div', 'jg-wol__name', name || 'Anonymous');
-    }
-    who.appendChild(nameNode);
-
-    // Role and company are independently optional; join only what exists.
-    // Many imported rows carry the employer in both fields ("Lead PM @ Acme"
-    // plus company "Acme"), which would render as "Lead PM @ Acme · Acme".
-    // Drop the repetition rather than print it twice; once the Notion data is
-    // tidied this rule simply stops matching.
-    var role = text(record.roleTitle);
-    var company = text(record.company);
-    if (role && company && role.toLowerCase().indexOf(company.toLowerCase()) !== -1) company = null;
-    var meta = [role, company].filter(Boolean).join(' · ');
-    if (meta) who.appendChild(el('div', 'jg-wol__meta', meta));
-
-    caption.appendChild(who);
-    figure.appendChild(caption);
     item.appendChild(figure);
     return item;
   }
@@ -564,7 +517,7 @@
       if (shown >= all.length) return;                 // hide when all are visible
       var remaining = all.length - shown;
       var next = Math.min(config.batchSize, remaining);
-      var button = el('button', 'jg-wol__btn', 'Load more');
+      var button = el('button', 'jg-wol__btn', config.loadMoreLabel);
       button.type = 'button';
       button.appendChild(el('span', 'jg-wol__sr', ' testimonials (' + next + ' more, ' + remaining + ' remaining)'));
       button.addEventListener('click', function () {
@@ -581,7 +534,7 @@
 
     function load() {
       showSkeletons();
-      // Fetched exactly once; "Load more" only reveals what is already in memory.
+      // Fetched exactly once; "load more" only reveals what is already in memory.
       fetch(endpointUrl(config), { credentials: 'omit', mode: 'cors' })
         .then(function (response) {
           if (!response.ok) throw new Error('HTTP ' + response.status);
