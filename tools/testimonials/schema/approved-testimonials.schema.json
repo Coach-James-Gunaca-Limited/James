@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://media.jamesgunaca.com/testimonials/approved-testimonials.schema.json",
+  "title": "Approved testimonials feed",
+  "description": "Public, consent-cleared testimonials published for the Wall of Love widget. Build metadata lives under `meta`; testimonial records carry no internal Notion fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "testimonials"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "generatedAt", "count", "source"],
+      "properties": {
+        "schemaVersion": { "type": "integer", "minimum": 1 },
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "count": { "type": "integer", "minimum": 0 },
+        "source": { "type": "string", "minLength": 1 }
+      }
+    },
+    "testimonials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "message",
+          "roleTitle",
+          "company",
+          "avatarUrl",
+          "attachedImageUrl",
+          "socialLink",
+          "testimonialFormat",
+          "featured",
+          "dateReceived"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^t[0-9a-f]{16}$" },
+          "name": { "type": ["string", "null"], "minLength": 1 },
+          "message": { "type": ["string", "null"], "minLength": 1 },
+          "roleTitle": { "type": ["string", "null"], "minLength": 1 },
+          "company": { "type": ["string", "null"], "minLength": 1 },
+          "avatarUrl": { "type": ["string", "null"], "format": "uri" },
+          "attachedImageUrl": { "type": ["string", "null"], "format": "uri" },
+          "socialLink": { "type": ["string", "null"], "format": "uri" },
+          "testimonialFormat": {
+            "type": ["string", "null"],
+            "enum": ["Written", "Image / Screenshot", "Video", null]
+          },
+          "featured": { "type": "boolean" },
+          "dateReceived": { "type": ["string", "null"], "format": "date" }
+        }
+      }
+    }
+  }
+}

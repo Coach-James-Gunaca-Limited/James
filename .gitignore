@@ -1,0 +1,3 @@
+# Local migration records. Contains Firebase download tokens and Notion page
+# ids: never commit to this public repository.
+.migration/

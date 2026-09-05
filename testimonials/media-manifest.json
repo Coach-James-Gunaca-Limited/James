@@ -1,0 +1,324 @@
+{
+  "meta": {
+    "generatedAt": "2026-09-05T15:48:18.607Z",
+    "mode": "download",
+    "publicBaseUrl": "https://media.jamesgunaca.com",
+    "counts": {
+      "discovered": 34,
+      "downloaded": 34,
+      "uploaded": 0,
+      "verified": 0,
+      "notionUpdated": 0,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "assets": [
+    {
+      "id": "t6918223b6be02717",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F-OQPrG6om1pirEWUTBVj%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t6918223b6be02717-avatar.webp",
+      "checksum": "5fd6f2c464550bd2edf2344e8fad28b69bff4ada19b9e1d9bc6355e5a7724bb6",
+      "bytes": 2652,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t9ec1479193646d58",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F2cc784e1-212d-4cbf-b024-157815b7b432%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t9ec1479193646d58-avatar.webp",
+      "checksum": "5f854bef0efc397786a8ca724b3876e68119743c207dcf1ea08c9b06d6c58563",
+      "bytes": 2282,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "taf5ac816838a291f",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fa624d8be-2c59-4fe0-96a6-e04220c7caaf%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/taf5ac816838a291f-avatar.webp",
+      "checksum": "c8e6885abea03e32d36bbbe83d9856fa504648753317cb6982e1a3b98accf236",
+      "bytes": 1984,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t943588575d378bfb",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Ffb16df2f-05ad-4191-9ddc-1620687d3646%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t943588575d378bfb-avatar.webp",
+      "checksum": "a70da3086c51fcfe389c88b3838e1c718f6fc3a95222e94284aaa81bff4a9089",
+      "bytes": 2354,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "td3cfcdbfa38ca13d",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F4d63bb08-4e8a-4594-87ae-73b68a5f5e10%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/td3cfcdbfa38ca13d-avatar.webp",
+      "checksum": "90432a4fd96f8cf1c4a6dd1f8190899dad2634aa8e1549c6708dce3d5588f27a",
+      "bytes": 1852,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t97ff4749eb53c660",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fe661541d-4c10-406e-aef4-fa7e1bb3a8a0%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t97ff4749eb53c660-avatar.webp",
+      "checksum": "565ed7205f05e2060002b8cb8109dcde50c37d81e97672f399f10f71c6aab411",
+      "bytes": 1392,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t5940fb26ff57e6ac",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F2f46e2db-a691-410c-9135-720e502750e4%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t5940fb26ff57e6ac-attached.webp",
+      "checksum": "2207d0994ec39f1ffcb2c77b56ba328214e9ad92bad92884f56eeae679c46177",
+      "bytes": 26384,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t6e24bfff9bbd06b8",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F75a4c5f4-8948-45f5-b4db-ac9c1e104b32%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t6e24bfff9bbd06b8-attached.webp",
+      "checksum": "4ca1bc54669d89da152911c2e6583ba6194552cee3ad0f0c94a9d1e11ba200a5",
+      "bytes": 26680,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tbf4a954c541ed6a0",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F134b6a02-7380-4565-a3c5-8483479635ca%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tbf4a954c541ed6a0-attached.webp",
+      "checksum": "4d75035e0e6d351144deddcaf69911bf6b00eac622d2677c83f8aa328fa757fd",
+      "bytes": 18020,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t7175f82ad67a967b",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F29760ae6-853b-4813-9bf8-e6878499d0e9%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t7175f82ad67a967b-attached.webp",
+      "checksum": "6a97dfc599edcb2f832db8c1ada0f77457869761905fa26410dec1475f89aa95",
+      "bytes": 27956,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "te8614fac7ac9ca76",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F68d62c45-1ada-4b68-a944-19042ec29ce1%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/te8614fac7ac9ca76-attached.webp",
+      "checksum": "b263ea2eec98c4fe07b2b661cfc190754ee647089c6af4b42a46a93aa3bb4050",
+      "bytes": 39030,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tb198c79aca2a84d5",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fd0378933-fc16-4d09-bdeb-d0d51065f354%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tb198c79aca2a84d5-avatar.webp",
+      "checksum": "1702775d210d1d2f709a0ac228c63a0df82e68944c3fe7ea77e9b83ce25d366d",
+      "bytes": 1358,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t435c1944c8232a29",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F8954d3e2-2b86-4c5a-8def-ce795bd36a27%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t435c1944c8232a29-avatar.webp",
+      "checksum": "e66dcd087c0db8a103a9623a7ce45442b82cf8129adbc4eb05930b8332c69fb0",
+      "bytes": 1854,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t7fcb7ccd7d09781e",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F7415b9fa-17f7-4703-9967-39bae4ab19bf%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t7fcb7ccd7d09781e-avatar.png",
+      "checksum": "3f8f748b37db75e992c2e97433f8d87f191871effe4e33c55efb649e740bfe34",
+      "bytes": 20054,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t08137984426148cb",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F10c40352-930f-45ae-a205-3444b8c13500%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t08137984426148cb-avatar.webp",
+      "checksum": "073d89e7b023888ce7f250c2fbea3380a4af99a1c0b85865c07fc97d8b8bc6c9",
+      "bytes": 1938,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tc9bd3b833fd731bf",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fb3637e32-6289-4c43-813c-e62b504b648e%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tc9bd3b833fd731bf-attached.webp",
+      "checksum": "738303a1e5cf4ef8e994f1b1fe2aaef5916a04626f3e8ed6817e60caafef1049",
+      "bytes": 13598,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t2798d61f2cd1af90",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F55cbaa63-c3df-46a2-ba77-e4bb5b9c84e0%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t2798d61f2cd1af90-attached.webp",
+      "checksum": "392ab4bea54a58eb556d6a2b011ae6dcd3a91ae7a0e422e3c7b393d61cfb420c",
+      "bytes": 24640,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "te24df47f480d1b7c",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fb6a4ac4a-3e14-4aee-9baf-85d3d54eda2c%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/te24df47f480d1b7c-attached.webp",
+      "checksum": "ff496bedbefba3148587ec08ff31d38ca62eb742ca7d73c93e89cf7df81cca2b",
+      "bytes": 36234,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "te24df47f480d1b7c",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fb99630f2-6f3f-49dc-9d52-0291a3f63a64%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/te24df47f480d1b7c-avatar.webp",
+      "checksum": "f764a71b08516c862aec1714bca56dfb3b8de444a2dee557541b142d5c90bf95",
+      "bytes": 2260,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tfd75fc03c8e8a1d6",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F8bdcd7ec-72bc-4788-bf8c-e6f9c0e64ae4%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tfd75fc03c8e8a1d6-avatar.webp",
+      "checksum": "82b9249b111e57bbf0557b68b7dadd107169745ec3cb4d2cc60729ec698447df",
+      "bytes": 2634,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t279435d04285a19b",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fa5c4e4c1-9192-4574-80a1-de30db847aa5%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t279435d04285a19b-avatar.webp",
+      "checksum": "0348fba1da10a5e0a4a6617927ed24dda43067291fe9d0b2ceffe2bf8c5ea0a0",
+      "bytes": 2588,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "teb12061794e859ef",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F31b1881b-046d-4c02-9820-efe8ae6b9a5b%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/teb12061794e859ef-avatar.webp",
+      "checksum": "7b1c8a1b734af0941da064527e9f2254983788ced8ff664bc9bcde35461f70d0",
+      "bytes": 1648,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t490dd66206ca1700",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F0df592e1-b5d3-401c-bd24-32a851e3d956%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t490dd66206ca1700-avatar.webp",
+      "checksum": "fd865eabeba96978d4cfa67e65a6513633a8f4e4c1abbf2a19845ba3b540f25f",
+      "bytes": 1772,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tc685f94a7a845180",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F20311785-f949-4656-b1d5-82dc30bf4dc9%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tc685f94a7a845180-avatar.webp",
+      "checksum": "edd2bc01b35532d74ee442abd8d2b1a9af39f25ee426bd37c970172a2f14cde4",
+      "bytes": 1710,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t963a1f46c4d1c537",
+      "assetType": "attached",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fe8ff6591-adc4-4f5e-93b7-3ffc1c666a50%2Fattached",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t963a1f46c4d1c537-attached.webp",
+      "checksum": "132b603b861ee2f5df152beb2eb1135859cfdf99c0425f68772e403add3e42e8",
+      "bytes": 45656,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t963a1f46c4d1c537",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F4c44f70d-2d3f-448d-b10c-8c96feff7822%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t963a1f46c4d1c537-avatar.webp",
+      "checksum": "3628250d85fcaf77b23709fffa974a5b4903d8512abfd01a1838a3ccd952a078",
+      "bytes": 2082,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t2cd738f7194a4d24",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F88adfb4c-868c-4c8a-afe5-b43424bd4d58%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t2cd738f7194a4d24-avatar.webp",
+      "checksum": "41367c5a1e60d8eb054396cb11edd5df8e5d6193fb34683daec27635f57760c4",
+      "bytes": 1506,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t4da9b04804d2d89f",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F1c726054-73c7-40a5-8982-3709eb1641c8%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t4da9b04804d2d89f-avatar.webp",
+      "checksum": "5f5c8422193bed660fe17846c4ef2e5d19a89c3d484695446c3cdb717345832b",
+      "bytes": 1496,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tb52e3035d8af2341",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Ff9bacf8a-d94f-4bf5-8b4d-aa0e6a661413%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tb52e3035d8af2341-avatar.png",
+      "checksum": "cbfdd6956b4b25df9627fcaaf2bf2265c18221786649b5f554ff54299b8c7f95",
+      "bytes": 20748,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t1420adc7c6353dee",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F-OsQMbPQhFd_gjX4wEJ4%2Fea62597f-f21f-4555-b66b-1cb2e6a03237-avatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t1420adc7c6353dee-avatar.png",
+      "checksum": "e6997f0f91993a52a0c12da45b3dca2632b4664c00b45152d916c987d661392c",
+      "bytes": 14439,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t0e220cec27acd1f8",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F-OuRx_RL4G-gb6qE7tZU%2F82b95008-e6e0-4e1d-aef4-890383356f91-avatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t0e220cec27acd1f8-avatar.webp",
+      "checksum": "94a6a4d88e06f1bb11f36b186424ca61f1536d2ff309d7185ab635a82f423446",
+      "bytes": 2098,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tf66a8408555dba77",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F-P-EWqlHdvjOODahNaFu%2F622fb217-1815-4052-9a6b-79ed7f14e0ba-avatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tf66a8408555dba77-avatar.webp",
+      "checksum": "5ab58cd81465e183be3e3d97dd3486900b3582467310ea190056a1dafaf1325a",
+      "bytes": 2178,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "tc281296fc74361d2",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2F3bc66622-86bd-4589-a646-97aeaa2d16f1%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/tc281296fc74361d2-avatar.webp",
+      "checksum": "892466f870696421f86acea157c0f57862a47a9604360e5e15bebc9c20ad5da5",
+      "bytes": 1650,
+      "status": "downloaded-pending-publish"
+    },
+    {
+      "id": "t99bdcdbd6b199456",
+      "assetType": "avatar",
+      "originalUrlRedacted": "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/testimonials%2Fcc6295d4-2ff7-4f0b-9aad-a53bc001d3a2%2Favatar",
+      "newUrl": "https://media.jamesgunaca.com/img/testimonials/t99bdcdbd6b199456-avatar.webp",
+      "checksum": "e33aa231b40c314a746c85f480505bae627168394ff5713259d9212655b0ff4e",
+      "bytes": 2104,
+      "status": "downloaded-pending-publish"
+    }
+  ]
+}
