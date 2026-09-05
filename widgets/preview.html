@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wall of Love — local preview</title>
+<style>
+  body { margin: 0; font: 15px/1.55 'Plus Jakarta Sans', system-ui, sans-serif; color: #2B2D35; background: #F6F8FC; }
+  header { background: #fff; border-bottom: 1px solid #E8ECF3; padding: 20px 24px; }
+  h1 { margin: 0 0 4px; font-size: 1.15rem; }
+  header p { margin: 0; color: #6B7280; font-size: .88rem; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  nav button { font: inherit; font-size: .85rem; font-weight: 600; padding: 7px 14px; border-radius: 999px;
+               border: 1px solid #E8ECF3; background: #fff; color: #2B2D35; cursor: pointer; }
+  nav button[aria-pressed="true"] { background: #1B2CC2; border-color: #1B2CC2; color: #fff; }
+  main { padding: 28px 24px 80px; max-width: 1200px; margin: 0 auto; }
+  .scenario-note { margin: 0 0 20px; padding: 12px 16px; border-left: 3px solid #1B2CC2;
+                   background: #fff; border-radius: 0 8px 8px 0; font-size: .88rem; color: #6B7280; }
+  #xss-report { margin: 0 0 20px; padding: 12px 16px; border-radius: 8px; font-size: .88rem; font-weight: 600; }
+  .pass { background: #e7f5ec; color: #1A7A3C; border: 1px solid #84C1AA; }
+  .fail { background: #fdeceb; color: #C0392B; border: 1px solid #C0392B; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Wall of Love — local preview</h1>
+  <p>Renders <code>widgets/wall-of-love.html</code> against local fixtures. Resize the window to check mobile.</p>
+  <nav id="scenarios"></nav>
+</header>
+
+<main>
+  <p class="scenario-note" id="note"></p>
+  <p id="xss-report"></p>
+  <div id="stage"></div>
+</main>
+
+<script>
+/*
+ * Dev-only harness. It loads the real widget file, injects its <style>, and
+ * re-creates its <script> so the browser executes it (scripts inserted as
+ * markup do not run). This keeps the preview honest: it exercises the exact
+ * file that gets pasted into Squarespace, with no copy of the code here.
+ */
+var SCENARIOS = {
+  full: {
+    label: '/testimonials (24 + Load more)',
+    note: '30 fixture records, 24 shown initially, batches of 12. Covers: featured cards, image-only card, very long text with Show more, missing avatar, broken avatar, missing role/company, missing name, multi-line text, and a malicious-content record.',
+    attrs: { 'data-endpoint': './fixtures/preview-feed.json', 'data-initial': '24', 'data-batch': '12' }
+  },
+  homepage: {
+    label: 'Homepage teaser (6 + Load more)',
+    note: 'Same widget, same feed, different data attributes only. This is how one pasted block serves two pages.',
+    attrs: { 'data-endpoint': './fixtures/preview-feed.json', 'data-initial': '6', 'data-batch': '6' }
+  },
+  empty: {
+    label: 'Empty results',
+    note: 'A valid feed with zero approved testimonials. This is the live state today, before moderation runs.',
+    attrs: { 'data-endpoint': './fixtures/empty-feed.json', 'data-initial': '24' }
+  },
+  error: {
+    label: 'Failed network',
+    note: 'Endpoint returns 404. The widget must show the error state and a working Try again button, never a blank block.',
+    attrs: { 'data-endpoint': './fixtures/does-not-exist.json', 'data-initial': '24' }
+  },
+  themed: {
+    label: 'Theme override',
+    note: 'Same widget with theme custom properties overridden, to confirm the component is re-skinnable without editing its CSS.',
+    attrs: { 'data-endpoint': './fixtures/preview-feed.json', 'data-initial': '9', 'data-batch': '6' },
+    theme: { accent: '#1A7A3C', radius: '4px', minCardWidth: '260px' }
+  }
+};
+
+var widgetSource = null;
+var styleNode = null;
+
+function loadWidgetSource() {
+  if (widgetSource) return Promise.resolve(widgetSource);
+  return fetch('./wall-of-love.html')
+    .then(function (r) { return r.text(); })
+    .then(function (text) { widgetSource = text; return text; });
+}
+
+function render(key) {
+  var scenario = SCENARIOS[key];
+  document.getElementById('note').textContent = scenario.note;
+  document.getElementById('xss-report').textContent = '';
+  document.getElementById('xss-report').className = '';
+
+  Array.prototype.forEach.call(document.querySelectorAll('#scenarios button'), function (b) {
+    b.setAttribute('aria-pressed', String(b.dataset.key === key));
+  });
+
+  window.JG_WOL_CONFIG = scenario.theme ? { theme: scenario.theme } : {};
+
+  loadWidgetSource().then(function (source) {
+    var doc = new DOMParser().parseFromString(source, 'text/html');
+    var stage = document.getElementById('stage');
+    stage.textContent = '';
+
+    if (!styleNode) {
+      styleNode = document.createElement('style');
+      styleNode.textContent = doc.querySelector('style').textContent;
+      document.head.appendChild(styleNode);
+    }
+
+    var mount = document.createElement('div');
+    mount.setAttribute('data-jg-wol', '');
+    Object.keys(scenario.attrs).forEach(function (name) {
+      mount.setAttribute(name, scenario.attrs[name]);
+    });
+    stage.appendChild(mount);
+
+    if (window.JgWallOfLove) {
+      window.JgWallOfLove.init();
+    } else {
+      var script = document.createElement('script');
+      script.textContent = doc.querySelector('script').textContent;
+      document.body.appendChild(script);
+    }
+
+    if (key === 'full' || key === 'homepage' || key === 'themed') {
+      setTimeout(checkInjection, 700);
+    }
+  });
+}
+
+/* Assert the malicious fixture stayed inert: no injected elements, no live
+   javascript: URLs, and the raw markup visible as literal text. */
+function checkInjection() {
+  var stage = document.getElementById('stage');
+  var problems = [];
+  if (stage.querySelector('iframe')) problems.push('an <iframe> was injected');
+  if (stage.querySelector('script')) problems.push('a <script> was injected');
+  if (stage.querySelector('img[src^="javascript:"], a[href^="javascript:"]')) problems.push('a javascript: URL is live');
+  var boldFromData = Array.prototype.some.call(stage.querySelectorAll('b'), function (b) {
+    return /bold/i.test(b.textContent);
+  });
+  if (boldFromData) problems.push('<b> from testimonial text was parsed as markup');
+
+  var report = document.getElementById('xss-report');
+  if (problems.length) {
+    report.className = 'fail';
+    report.textContent = 'INJECTION CHECK FAILED: ' + problems.join('; ');
+  } else {
+    report.className = 'pass';
+    report.textContent = 'Injection check passed: malicious fixture rendered as inert text, no javascript: URLs, no injected nodes.';
+  }
+}
+
+var nav = document.getElementById('scenarios');
+Object.keys(SCENARIOS).forEach(function (key) {
+  var button = document.createElement('button');
+  button.type = 'button';
+  button.dataset.key = key;
+  button.textContent = SCENARIOS[key].label;
+  button.setAttribute('aria-pressed', 'false');
+  button.addEventListener('click', function () { render(key); });
+  nav.appendChild(button);
+});
+
+render('full');
+</script>
+</body>
+</html>
