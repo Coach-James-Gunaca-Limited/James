@@ -286,7 +286,7 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
     document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check('mobile (390px): no horizontal overflow', overflow <= 0, `overflow ${overflow}px`);
   const cols = await page.evaluate(() =>
-    Number(getComputedStyle(document.querySelector('.jg-wol__grid')).columnCount));
+    getComputedStyle(document.querySelector('.jg-wol__grid')).gridTemplateColumns.split(' ').length);
   check('mobile: masonry collapses to a single column', cols === 1, `${cols} column(s)`);
   const tap = await page.evaluate(() => {
     const b = document.querySelector('.jg-wol__btn');
@@ -344,6 +344,10 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
   check('css: every selector is scoped under .jg-wol', unscoped.length === 0,
     unscoped.length ? unscoped.join(' | ') : `${selectors.length} selectors checked`);
   check('css: no :root custom properties declared', !css.includes(':root'));
+  // Safari mis-measures multi-column boxes and left a viewport of blank space
+  // below the wall. The layout must not go back to it.
+  check('css: layout does not use CSS multi-column',
+    !/\bcolumns\s*:/.test(css) && !/\bcolumn-count\s*:/.test(css) && !/break-inside/.test(css));
   check('css: no bare element or wildcard selectors that could hit Squarespace',
     !selectors.some((sel) => /^(\*|html|body|h[1-6]|p|a|ul|li|img|button|section|figure)\b/.test(sel)));
 

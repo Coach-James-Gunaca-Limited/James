@@ -31,6 +31,7 @@
   --jg-wol-gap: 20px;
   --jg-wol-pad: 20px;
   --jg-wol-col: 340px;
+  --jg-wol-btn-w: 600px;           /* matches the site's wide primary buttons */
 
   --jg-wol-font-head: 'nohemi-3qocai', 'Nohemi', system-ui, sans-serif;
   --jg-wol-font-quote: 'working-1sjdck', 'Working', 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -112,25 +113,52 @@
   line-height: inherit;
 }
 
-/* Masonry. CSS columns let each card keep its natural height and the next card
-   pull up into the gap, instead of every card in a row stretching to match the
-   tallest one. */
+/* Masonry via grid row spans rather than CSS multi-column.
+   Multi-column was the obvious choice and worked in Chrome, but Safari's
+   multicol implementation mis-measures the column box and left a viewport of
+   empty space below the wall on desktop. Mobile was unaffected because a
+   single column never triggers the balancing.
+
+   Instead the grid uses 1px auto-rows and JavaScript sets each card's
+   grid-row-end to span its own measured height. That gives the same
+   pull-up-into-the-gap layout, in row-major DOM order, with no reliance on
+   multicol. Without JavaScript the grid still renders as a plain equal-row
+   grid, which is a reasonable fallback. */
 .jg-wol ul.jg-wol__grid {
-  columns: var(--jg-wol-col);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--jg-wol-col), 1fr));
   column-gap: var(--jg-wol-gap);
+  row-gap: var(--jg-wol-gap);
+  align-items: start;
+}
+
+/* Applied by JS once it can measure. Row gap moves into the span so that a
+   card's height and its gutter are one unit. */
+.jg-wol ul.jg-wol__grid--masonry {
+  grid-auto-rows: 1px;
+  row-gap: 0;
 }
 
 .jg-wol li.jg-wol__card {
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;      /* older WebKit */
   display: block;
-  /* No top margin: a stray one from the host template would push the first
-     card of a column down and break the flat top edge of the wall. */
-  margin: 0 0 var(--jg-wol-gap);
+  /* No margin: in masonry mode the gutter is part of the row span, and a stray
+     margin from the host template would break the flat top edge of the wall. */
+  margin: 0;
   background: var(--jg-wol-card);
   border-radius: var(--jg-wol-radius);
   padding: 24px;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+/* Newly revealed cards fade in rather than snapping into place. */
+.jg-wol li.jg-wol__card--enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jg-wol li.jg-wol__card { transition: none; }
+  .jg-wol li.jg-wol__card--enter { opacity: 1; transform: none; }
 }
 
 /* Attribution — first in the card, so the person leads. */
@@ -185,7 +213,7 @@
 /* Quote */
 .jg-wol p.jg-wol__text {
   font-family: var(--jg-wol-font-quote);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   line-height: 1.6;
   white-space: pre-line;      /* keep author line breaks, still plain text */
   overflow-wrap: anywhere;
@@ -214,6 +242,11 @@
   text-underline-offset: 3px;
 }
 
+/* Any `display` declaration beats the UA stylesheet's `[hidden]{display:none}`,
+   so setting .hidden = true on this button was not enough to remove it: the
+   rule above kept it visible on quotes that were never clipped. */
+.jg-wol button.jg-wol__more[hidden] { display: none !important; }
+
 .jg-wol img.jg-wol__shot {
   display: block;
   width: 100%;
@@ -232,6 +265,13 @@
 
 /* Controls and states */
 .jg-wol div.jg-wol__foot { margin-top: 30px !important; text-align: center; }
+
+/* Full width up to --jg-wol-btn-w, so it reads at the same weight as the
+   site's own primary buttons rather than a small pill beside them. */
+.jg-wol div.jg-wol__foot button.jg-wol__btn {
+  width: 100%;
+  max-width: var(--jg-wol-btn-w);
+}
 
 /* Sized to sit alongside Squarespace's own primary buttons, which on this site
    compute to about 20px at weight 700 with 1rem/1.2rem padding. */
@@ -272,8 +312,7 @@
 .jg-wol p.jg-wol__noteText:last-child { margin-bottom: 0 !important; }
 
 .jg-wol li.jg-wol__skeleton {
-  break-inside: avoid;
-  margin: 0 0 var(--jg-wol-gap);
+  margin: 0;
   border-radius: var(--jg-wol-radius);
   background: var(--jg-wol-card);
   opacity: .55;
@@ -409,7 +448,7 @@
 
   /* ----------------------------------------------------------------- card */
 
-  function buildCard(record, config) {
+  function buildCard(record, config, clamps, onToggle, onMedia) {
     var item = el('li', 'jg-wol__card');
     var figure = el('figure', 'jg-wol__figure');
 
@@ -432,7 +471,9 @@
         var fallback = el('span', 'jg-wol__monogram', initials(name));
         fallback.setAttribute('aria-hidden', 'true');
         if (img.parentNode) img.parentNode.replaceChild(fallback, img);
+        if (typeof onMedia === 'function') onMedia();
       });
+      img.addEventListener('load', function () { if (typeof onMedia === 'function') onMedia(); });
       caption.appendChild(img);
     } else {
       var mono = el('span', 'jg-wol__monogram', initials(name));
@@ -474,7 +515,11 @@
       quote.appendChild(body);
       figure.appendChild(quote);
 
-      // Only offer "Show more" when the text is genuinely clipped.
+      // Only offer "Show more" when the text is genuinely clipped. Whether it
+      // is depends on the final line height, so this cannot be decided here:
+      // the webfonts have usually not loaded yet and the text reflows when
+      // they do. The card registers itself and `refresh` re-measures once
+      // fonts are ready, on resize, and whenever the layout is recomputed.
       body.classList.add('jg-wol__text--clamped');
       var toggle = el('button', 'jg-wol__more', 'Show more');
       toggle.type = 'button';
@@ -484,13 +529,10 @@
         var expanded = body.classList.toggle('jg-wol__text--clamped') === false;
         toggle.setAttribute('aria-expanded', String(expanded));
         toggle.textContent = expanded ? 'Show less' : 'Show more';
+        if (typeof onToggle === 'function') onToggle();
       });
       figure.appendChild(toggle);
-
-      requestAnimationFrame(function () {
-        if (body.scrollHeight - body.clientHeight > 4) toggle.hidden = false;
-        else body.classList.remove('jg-wol__text--clamped');
-      });
+      clamps.push({ body: body, toggle: toggle });
     }
 
     var shot = safeUrl(record.attachedImageUrl);
@@ -503,7 +545,11 @@
       image.alt = message
         ? 'Screenshot shared by ' + (name || 'this client')
         : 'Testimonial screenshot from ' + (name || 'a client');
-      image.addEventListener('error', function () { image.remove(); });
+      image.addEventListener('load', function () { if (typeof onMedia === 'function') onMedia(); });
+      image.addEventListener('error', function () {
+        image.remove();
+        if (typeof onMedia === 'function') onMedia();
+      });
       figure.appendChild(image);
     }
 
@@ -563,19 +609,89 @@
 
     var all = [];
     var shown = 0;
+    var clamps = [];
+    var pending = false;
+
+    /* Masonry: give each card a row span equal to its own measured height, so
+       the next card in the column starts immediately below it. Replaces CSS
+       multi-column, which Safari mis-measured. */
+    function layout() {
+      var cards = grid.querySelectorAll('.jg-wol__card');
+      if (!cards.length) return;
+
+      var gap = parseFloat(getComputedStyle(grid).columnGap) || 20;
+      var single = grid.clientWidth > 0 &&
+        getComputedStyle(grid).gridTemplateColumns.split(' ').length === 1;
+
+      if (single) {
+        // One column: plain flow is simpler and avoids rounding drift.
+        grid.classList.remove('jg-wol__grid--masonry');
+        Array.prototype.forEach.call(cards, function (card) { card.style.gridRowEnd = ''; });
+        return;
+      }
+
+      // Measure with spans cleared, then apply, so heights are natural.
+      grid.classList.remove('jg-wol__grid--masonry');
+      Array.prototype.forEach.call(cards, function (card) { card.style.gridRowEnd = ''; });
+      var heights = Array.prototype.map.call(cards, function (card) {
+        return card.getBoundingClientRect().height;
+      });
+      grid.classList.add('jg-wol__grid--masonry');
+      Array.prototype.forEach.call(cards, function (card, i) {
+        card.style.gridRowEnd = 'span ' + Math.max(1, Math.ceil(heights[i] + gap));
+      });
+    }
+
+    /** Re-decide which quotes are actually clipped, then re-run the layout. */
+    function refresh() {
+      clamps.forEach(function (entry) {
+        if (entry.toggle.getAttribute('aria-expanded') === 'true') return;
+        entry.body.classList.add('jg-wol__text--clamped');
+        var clipped = entry.body.scrollHeight - entry.body.clientHeight > 4;
+        entry.toggle.hidden = !clipped;
+        if (!clipped) entry.body.classList.remove('jg-wol__text--clamped');
+      });
+      layout();
+    }
+
+    /** Coalesce the many triggers (images, fonts, resize) into one pass. */
+    function scheduleRefresh() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () {
+        pending = false;
+        refresh();
+      });
+    }
 
     function renderNext(count) {
       // The feed is already ordered (featured first, then newest). Rendering the
       // next slice as-is is what keeps the widget's order identical to the JSON.
       var slice = all.slice(shown, shown + count);
       var fragment = document.createDocumentFragment();
-      slice.forEach(function (record) { fragment.appendChild(buildCard(record, config)); });
+      var added = [];
+      slice.forEach(function (record) {
+        var card = buildCard(record, config, clamps, scheduleRefresh, scheduleRefresh);
+        card.classList.add('jg-wol__card--enter');
+        added.push(card);
+        fragment.appendChild(card);
+      });
       grid.appendChild(fragment);
 
       var firstNew = shown;
       shown += slice.length;
       updateFooter();
       status.textContent = 'Showing ' + shown + ' of ' + all.length + ' testimonials.';
+
+      refresh();
+      // Two frames: one for the browser to paint the cards at opacity 0 with
+      // their spans applied, the next to start the transition.
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          added.forEach(function (card) { card.classList.remove('jg-wol__card--enter'); });
+        });
+      });
+
       return grid.children[firstNew] || null;
     }
 
@@ -626,6 +742,18 @@
           showNote(config.errorMessage, 'Try again', load);
         });
     }
+
+    // Webfonts change line heights, which changes both which quotes are
+    // clipped and how tall every card is.
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+      document.fonts.ready.then(scheduleRefresh).catch(function () {});
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(scheduleRefresh, 120);
+    });
 
     load();
   }
