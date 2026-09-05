@@ -67,16 +67,20 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
   await page.goto(BASE, { waitUntil: 'networkidle' });
   await page.waitForSelector('.jg-wol__card', { timeout: 10000 });
 
+  // Counts come from the fixture so adding a record cannot silently break these.
+  const fixture = await (await fetch(`${ORIGIN}/widgets/fixtures/preview-feed.json`)).json();
+  const TOTAL = fixture.testimonials.length;
+
   const initial = await page.locator('.jg-wol__card').count();
   check('desktop: renders exactly initialCount (24) cards', initial === 24, `got ${initial}`);
 
   const loadMore = page.locator('.jg-wol__btn', { hasText: 'Load more' });
-  check('desktop: Load more is visible with 30 records', await loadMore.isVisible());
+  check(`desktop: Load more is visible with ${TOTAL} records`, await loadMore.isVisible());
 
   await loadMore.click();
   await page.waitForTimeout(300);
   const after = await page.locator('.jg-wol__card').count();
-  check('desktop: Load more reveals the rest (30)', after === 30, `got ${after}`);
+  check(`desktop: Load more reveals the rest (${TOTAL})`, after === TOTAL, `got ${after}, expected ${TOTAL}`);
   check('desktop: Load more hides when all are visible', !(await loadMore.isVisible().catch(() => false)));
 
   // Fetched exactly once: Load more must come from memory.
@@ -120,9 +124,13 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
   const metas = await page.locator('.jg-wol__meta').count();
   check('graceful: cards with no role and no company omit the meta line', metas < cards, `${metas} meta / ${cards} cards`);
 
+  const overlap = await page.locator('.jg-wol__meta', { hasText: 'Lead PM @ Northwind' }).first().textContent();
+  check('graceful: an employer named in both role and company prints once',
+    overlap.trim() === 'Lead PM @ Northwind', `got "${overlap.trim()}"`);
+
   /* -------------------------------------------------- ordering */
   const names = await page.locator('.jg-wol__name').allTextContents();
-  const feed = await (await fetch(`${ORIGIN}/widgets/fixtures/preview-feed.json`)).json();
+  const feed = fixture;
 
   // Derived from the fixture rather than hardcoded, so renaming the synthetic
   // people cannot silently turn this into a test of nothing.
@@ -141,7 +149,8 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
   /* -------------------------------------------------- accessibility */
   const section = page.locator('.jg-wol section');
   check('a11y: section has an accessible label', !!(await section.getAttribute('aria-label')));
-  check('a11y: list markup is a real ul/li', (await page.locator('ul.jg-wol__grid > li.jg-wol__card').count()) === 30);
+  check('a11y: list markup is a real ul/li',
+    (await page.locator('ul.jg-wol__grid > li.jg-wol__card').count()) === TOTAL);
   check('a11y: a polite live region reports progress', (await page.locator('.jg-wol [role="status"][aria-live="polite"]').count()) === 1);
   const extLinks = await page.locator('.jg-wol a[target="_blank"]').count();
   const relOk = await page.locator('.jg-wol a[target="_blank"][rel*="noopener"]').count();
@@ -214,8 +223,9 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
     return Array.prototype.indexOf.call(active.parentNode.children, active) === 24;
   });
   check('keyboard: Load more moves focus to the first newly revealed card', movedToNewCard);
+  const total = (await (await fetch(`${ORIGIN}/widgets/fixtures/preview-feed.json`)).json()).testimonials.length;
   const count = await page.locator('.jg-wol__card').count();
-  check('keyboard: Load more via Enter reveals the next batch', count === 30, `got ${count}`);
+  check('keyboard: Load more via Enter reveals the next batch', count === total, `got ${count}, expected ${total}`);
   await context.close();
 }
 

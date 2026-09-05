@@ -145,6 +145,12 @@ push({ name: "<img src=x onerror=alert('XSS-name')>",
   socialLink: "javascript:alert('XSS-social')", testimonialFormat: 'Written',
   featured: false, dateReceived: '2026-04-15' });
 
+// Employer repeated in both fields, as most imported rows are: the meta line
+// must read "Lead PM @ Northwind", not "Lead PM @ Northwind - Northwind".
+push({ name: names[7], message: 'Role and company overlap; the company must not be printed twice.',
+  roleTitle: 'Lead PM @ Northwind', company: 'Northwind', avatarUrl: avatarFor(names[7]),
+  attachedImageUrl: null, socialLink: null, testimonialFormat: 'Written', featured: false, dateReceived: '2026-04-12' });
+
 push({ name: null, message: 'Anonymous testimonial with no name supplied.', roleTitle: 'PM',
   company: null, avatarUrl: null, attachedImageUrl: null, socialLink: null,
   testimonialFormat: 'Written', featured: false, dateReceived: '2026-04-10' });

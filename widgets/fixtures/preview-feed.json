@@ -2,7 +2,7 @@
   "meta": {
     "schemaVersion": 1,
     "generatedAt": "2026-09-05T12:00:00.000Z",
-    "count": 30,
+    "count": 31,
     "source": "SYNTHETIC PREVIEW FIXTURE - invented people, not real testimonials"
   },
   "testimonials": [
@@ -99,6 +99,19 @@
     },
     {
       "id": "t0000000000000008",
+      "name": "Harper Dummy",
+      "message": "Role and company overlap; the company must not be printed twice.",
+      "roleTitle": "Lead PM @ Northwind",
+      "company": "Northwind",
+      "avatarUrl": "./fixtures/media/avatar-hd-236.svg",
+      "attachedImageUrl": null,
+      "socialLink": null,
+      "testimonialFormat": "Written",
+      "featured": false,
+      "dateReceived": "2026-04-12"
+    },
+    {
+      "id": "t0000000000000009",
       "name": null,
       "message": "Anonymous testimonial with no name supplied.",
       "roleTitle": "PM",
@@ -111,7 +124,7 @@
       "dateReceived": "2026-04-10"
     },
     {
-      "id": "t0000000000000009",
+      "id": "t0000000000000010",
       "name": "Georgie Stub",
       "message": "Three things changed:\n\n1. My CV finally said something.\n2. I stopped apologising in interviews.\n3. I asked for more money and got it.",
       "roleTitle": "Product Manager",
@@ -124,7 +137,7 @@
       "dateReceived": "2026-04-01"
     },
     {
-      "id": "t0000000000000010",
+      "id": "t0000000000000011",
       "name": "Harper Dummy",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Senior Product Manager",
@@ -137,7 +150,7 @@
       "dateReceived": "2026-03-28"
     },
     {
-      "id": "t0000000000000011",
+      "id": "t0000000000000012",
       "name": "Indigo Test",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Group Product Manager",
@@ -150,7 +163,7 @@
       "dateReceived": "2026-03-27"
     },
     {
-      "id": "t0000000000000012",
+      "id": "t0000000000000013",
       "name": "Jules Sample",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Head of Product",
@@ -163,7 +176,7 @@
       "dateReceived": "2026-03-26"
     },
     {
-      "id": "t0000000000000013",
+      "id": "t0000000000000014",
       "name": "Kai Placeholder",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Lead PM",
@@ -176,7 +189,7 @@
       "dateReceived": "2026-03-25"
     },
     {
-      "id": "t0000000000000014",
+      "id": "t0000000000000015",
       "name": "Lennox Fixture",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Principal PM",
@@ -189,7 +202,7 @@
       "dateReceived": "2026-03-24"
     },
     {
-      "id": "t0000000000000015",
+      "id": "t0000000000000016",
       "name": "Marlow Example",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Product Director",
@@ -202,7 +215,7 @@
       "dateReceived": "2026-03-23"
     },
     {
-      "id": "t0000000000000016",
+      "id": "t0000000000000017",
       "name": "Noor Sample",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Product Manager",
@@ -215,7 +228,7 @@
       "dateReceived": "2026-03-22"
     },
     {
-      "id": "t0000000000000017",
+      "id": "t0000000000000018",
       "name": "Oakley Mock",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": null,
@@ -228,7 +241,7 @@
       "dateReceived": "2026-03-21"
     },
     {
-      "id": "t0000000000000018",
+      "id": "t0000000000000019",
       "name": "Pip Stub",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Senior Product Manager",
@@ -241,7 +254,7 @@
       "dateReceived": "2026-03-20"
     },
     {
-      "id": "t0000000000000019",
+      "id": "t0000000000000020",
       "name": "Quinn Dummy",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Group Product Manager",
@@ -254,7 +267,7 @@
       "dateReceived": "2026-03-19"
     },
     {
-      "id": "t0000000000000020",
+      "id": "t0000000000000021",
       "name": "Reese Test",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Head of Product",
@@ -267,7 +280,7 @@
       "dateReceived": "2026-03-18"
     },
     {
-      "id": "t0000000000000021",
+      "id": "t0000000000000022",
       "name": "Sage Sample",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Lead PM",
@@ -280,7 +293,7 @@
       "dateReceived": "2026-03-17"
     },
     {
-      "id": "t0000000000000022",
+      "id": "t0000000000000023",
       "name": "Tatum Placeholder",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Principal PM",
@@ -293,7 +306,7 @@
       "dateReceived": "2026-03-16"
     },
     {
-      "id": "t0000000000000023",
+      "id": "t0000000000000024",
       "name": "Umber Fixture",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Product Director",
@@ -306,7 +319,7 @@
       "dateReceived": "2026-03-15"
     },
     {
-      "id": "t0000000000000024",
+      "id": "t0000000000000025",
       "name": "Vale Example",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Product Manager",
@@ -319,7 +332,7 @@
       "dateReceived": "2026-03-14"
     },
     {
-      "id": "t0000000000000025",
+      "id": "t0000000000000026",
       "name": "Wren Sample",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": null,
@@ -332,7 +345,7 @@
       "dateReceived": "2026-03-13"
     },
     {
-      "id": "t0000000000000026",
+      "id": "t0000000000000027",
       "name": "Xen Mock",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Senior Product Manager",
@@ -345,7 +358,7 @@
       "dateReceived": "2026-03-12"
     },
     {
-      "id": "t0000000000000027",
+      "id": "t0000000000000028",
       "name": "Yarrow Stub",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Group Product Manager",
@@ -358,7 +371,7 @@
       "dateReceived": "2026-03-11"
     },
     {
-      "id": "t0000000000000028",
+      "id": "t0000000000000029",
       "name": "Zephyr Dummy",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Head of Product",
@@ -371,7 +384,7 @@
       "dateReceived": "2026-03-10"
     },
     {
-      "id": "t0000000000000029",
+      "id": "t0000000000000030",
       "name": "Ash Test",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Lead PM",
@@ -384,7 +397,7 @@
       "dateReceived": "2026-03-09"
     },
     {
-      "id": "t0000000000000030",
+      "id": "t0000000000000031",
       "name": "Briar Sample",
       "message": "The coaching turned a scattered job search into a plan I could actually follow. The difference showed up in the first interview after we started.",
       "roleTitle": "Principal PM",

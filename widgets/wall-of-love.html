@@ -475,7 +475,14 @@
     who.appendChild(nameNode);
 
     // Role and company are independently optional; join only what exists.
-    var meta = [text(record.roleTitle), text(record.company)].filter(Boolean).join(' · ');
+    // Many imported rows carry the employer in both fields ("Lead PM @ Acme"
+    // plus company "Acme"), which would render as "Lead PM @ Acme · Acme".
+    // Drop the repetition rather than print it twice; once the Notion data is
+    // tidied this rule simply stops matching.
+    var role = text(record.roleTitle);
+    var company = text(record.company);
+    if (role && company && role.toLowerCase().indexOf(company.toLowerCase()) !== -1) company = null;
+    var meta = [role, company].filter(Boolean).join(' · ');
     if (meta) who.appendChild(el('div', 'jg-wol__meta', meta));
 
     caption.appendChild(who);

@@ -19,6 +19,10 @@
  *   --rows-file PATH read normalised rows from JSON instead of querying Notion
  *   --out PATH       write somewhere other than testimonials/approved.json
  *   --allow-legacy   do not fail when a published URL still points at testimonial.to
+ *   --rewrite-legacy-media
+ *                    swap any remaining testimonial.to URL for its rescued
+ *                    equivalent on media.jamesgunaca.com, using the migration
+ *                    manifest
  */
 
 import { readFile } from 'node:fs/promises';
@@ -28,7 +32,7 @@ import { normaliseRow, isPublishable, toPublicRecord, sortPublicRecords, PUBLIC_
 import { isLegacyMediaUrl } from './lib/assets.mjs';
 import { assertValid } from './lib/validate.mjs';
 import { writeJsonAtomic } from './lib/atomic.mjs';
-import { NOTION_DATA_SOURCE_ID, FEED_PATH, FEED_PUBLIC_URL, SCHEMA_PATH, FEED_SCHEMA_VERSION } from './lib/config.mjs';
+import { NOTION_DATA_SOURCE_ID, FEED_PATH, FEED_PUBLIC_URL, SCHEMA_PATH, FEED_SCHEMA_VERSION, MANIFEST_PUBLIC_PATH } from './lib/config.mjs';
 
 const args = process.argv.slice(2);
 const has = (flag) => args.includes(flag);
@@ -41,6 +45,7 @@ const DRY_RUN = has('--dry-run');
 const ROWS_FILE = valueOf('--rows-file');
 const OUT_PATH = valueOf('--out') ? resolve(valueOf('--out')) : FEED_PATH;
 const ALLOW_LEGACY = has('--allow-legacy');
+const REWRITE_LEGACY = has('--rewrite-legacy-media');
 
 const log = (message) => console.log(message);
 
@@ -48,9 +53,11 @@ const log = (message) => console.log(message);
  * Assemble the feed document from normalised rows. Exported so the tests can
  * exercise filtering, ordering and leakage without touching the network.
  */
-export function buildFeed(rows, { generatedAt = new Date().toISOString() } = {}) {
+export function buildFeed(rows, { generatedAt = new Date().toISOString(), mediaMap } = {}) {
   const publishable = rows.filter(isPublishable);
-  const testimonials = sortPublicRecords(publishable.map(toPublicRecord));
+  let testimonials = sortPublicRecords(publishable.map(toPublicRecord));
+
+  if (mediaMap) testimonials = testimonials.map((record) => rewriteMedia(record, mediaMap));
 
   return {
     // Build metadata is deliberately separate from the records themselves, so a
@@ -63,6 +70,43 @@ export function buildFeed(rows, { generatedAt = new Date().toISOString() } = {})
     },
     testimonials,
   };
+}
+
+/**
+ * Swap a legacy testimonial.to URL for the rescued copy on our own host.
+ *
+ * The feed should serve durable URLs whether or not the Notion write-back has
+ * run yet, and the mapping is exact: the rescued filename is derived from the
+ * same Migration Key that produced the record's id, so `<id>-avatar` and
+ * `<id>-attached` identify the asset unambiguously. Once migrate-media.mjs
+ * --apply has repointed Notion, this becomes a no-op.
+ *
+ * A legacy URL with no manifest entry throws rather than being dropped or
+ * published as-is: silently losing someone's photo is worse than a failed run.
+ */
+function rewriteMedia(record, mediaMap) {
+  const swap = (url, kind) => {
+    if (!isLegacyMediaUrl(url)) return url;
+    const replacement = mediaMap.get(`${record.id}-${kind}`);
+    if (!replacement) {
+      throw new Error(
+        `${record.id} has a legacy ${kind} URL with no entry in the migration manifest. ` +
+          'Run migrate-media.mjs --download first so the asset exists.',
+      );
+    }
+    return replacement;
+  };
+  return { ...record, avatarUrl: swap(record.avatarUrl, 'avatar'), attachedImageUrl: swap(record.attachedImageUrl, 'attached') };
+}
+
+/** Build the id+kind -> durable URL lookup from the committed manifest. */
+async function loadMediaMap() {
+  const manifest = JSON.parse(await readFile(MANIFEST_PUBLIC_PATH, 'utf8'));
+  const map = new Map();
+  for (const asset of manifest.assets ?? []) {
+    if (asset.id && asset.newUrl) map.set(`${asset.id}-${asset.assetType}`, asset.newUrl);
+  }
+  return map;
 }
 
 async function loadRows() {
@@ -90,7 +134,14 @@ function assertNoPrivateFields(feed) {
 
 async function main() {
   const rows = await loadRows();
-  const feed = buildFeed(rows);
+
+  let mediaMap;
+  if (REWRITE_LEGACY) {
+    mediaMap = await loadMediaMap();
+    log(`Loaded ${mediaMap.size} rescued asset(s) from the migration manifest.`);
+  }
+
+  const feed = buildFeed(rows, { mediaMap });
 
   const schema = JSON.parse(await readFile(SCHEMA_PATH, 'utf8'));
   assertValid(feed, schema, 'approved testimonials feed');
@@ -113,7 +164,8 @@ async function main() {
   if (legacy.length > 0) {
     const message =
       `${legacy.length} published record(s) still point at testimonial.to media. ` +
-      `Run migrate-media.mjs --apply first, or pass --allow-legacy to publish anyway.`;
+      `Pass --rewrite-legacy-media to serve the rescued copies instead, run ` +
+      `migrate-media.mjs --apply to fix Notion itself, or pass --allow-legacy to publish anyway.`;
     if (!ALLOW_LEGACY) throw new Error(message);
     console.warn(`\nWARNING: ${message}`);
   }

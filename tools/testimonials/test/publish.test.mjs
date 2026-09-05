@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { buildFeed } from '../publish-json.mjs';
-import { publicId, toPublicRecord, isPublishable, sortPublicRecords, PUBLIC_FIELDS, FORBIDDEN_FIELDS } from '../lib/rows.mjs';
+import { publicId, toPublicRecord, isPublishable, sortPublicRecords, normaliseRow, normaliseLineBreaks, PUBLIC_FIELDS, FORBIDDEN_FIELDS } from '../lib/rows.mjs';
 import { validate, assertValid } from '../lib/validate.mjs';
 import { isLegacyMediaUrl, isRehostedUrl, assetFilename, detectImageExtension } from '../lib/assets.mjs';
 
@@ -241,4 +241,104 @@ test('media: image formats are detected from bytes, not Content-Type', () => {
   // An HTML error page served with a 200 must not pass as an image.
   assert.equal(detectImageExtension(Buffer.from('<!doctype html><html><body>Not found</body></html>')), null);
   assert.equal(detectImageExtension(Buffer.alloc(0)), null);
+});
+
+/* ---------------------------------------------------------------------------
+ * The testimonial.to export encoded paragraph breaks as literal <br> tags.
+ * ------------------------------------------------------------------------- */
+
+test('line breaks: <br> variants from the export become real newlines', () => {
+  assert.equal(normaliseLineBreaks('one<br>two'), 'one\ntwo');
+  assert.equal(normaliseLineBreaks('one<br/>two'), 'one\ntwo');
+  assert.equal(normaliseLineBreaks('one<br />two'), 'one\ntwo');
+  assert.equal(normaliseLineBreaks('one<BR>two'), 'one\ntwo');
+  assert.equal(normaliseLineBreaks('one<br><br>two'), 'one\n\ntwo');
+  // Runs longer than a blank line collapse, so cards do not gain huge gaps.
+  assert.equal(normaliseLineBreaks('one<br><br><br><br>two'), 'one\n\ntwo');
+});
+
+test('line breaks: no other tag is converted, so markup stays inert text', () => {
+  const hostile = "<script>alert(1)</script><b>bold</b><img src=x onerror=alert(1)>";
+  assert.equal(normaliseLineBreaks(hostile), hostile);
+  assert.equal(normaliseLineBreaks('<brb>not a break</brb>'), '<brb>not a break</brb>');
+  assert.equal(normaliseLineBreaks('<break>'), '<break>');
+});
+
+test('line breaks: normalisation runs during row extraction', () => {
+  const page = {
+    id: 'p1',
+    properties: {
+      'Migration Key': { rich_text: [{ plain_text: 'testimonial.to:-BR' }] },
+      Status: { select: { name: 'Approved for Use' } },
+      'Consent to Publish': { checkbox: true },
+      Message: { rich_text: [{ plain_text: 'First para.<br><br>Second para.' }] },
+      Name: { title: [{ plain_text: 'Br Person' }] },
+    },
+  };
+  assert.equal(normaliseRow(page).message, 'First para.\n\nSecond para.');
+});
+
+/* ---------------------------------------------------------------------------
+ * Serving rescued media before the Notion write-back has run.
+ * ------------------------------------------------------------------------- */
+
+const legacyRow = {
+  migrationKey: 'testimonial.to:-LEGACY',
+  status: 'Approved for Use',
+  consentToPublish: true,
+  featured: false,
+  dateReceived: '2026-01-01',
+  name: 'Legacy Person',
+  message: 'Still on the old host.',
+  avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/x%2Favatar?alt=media&token=z',
+  attachedImageUrl: 'https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/y%2Fattached?alt=media&token=z',
+};
+const legacyId = publicId(legacyRow.migrationKey);
+
+test('media rewrite: legacy URLs are swapped for the rescued copies', () => {
+  const map = new Map([
+    [`${legacyId}-avatar`, 'https://media.jamesgunaca.com/img/testimonials/x-avatar.webp'],
+    [`${legacyId}-attached`, 'https://media.jamesgunaca.com/img/testimonials/x-attached.png'],
+  ]);
+  const built = buildFeed([legacyRow], { mediaMap: map });
+  assert.equal(built.testimonials[0].avatarUrl, 'https://media.jamesgunaca.com/img/testimonials/x-avatar.webp');
+  assert.equal(built.testimonials[0].attachedImageUrl, 'https://media.jamesgunaca.com/img/testimonials/x-attached.png');
+});
+
+test('media rewrite: a legacy URL with no manifest entry fails loudly', () => {
+  assert.throws(
+    () => buildFeed([legacyRow], { mediaMap: new Map() }),
+    /no entry in the migration manifest/,
+  );
+});
+
+test('media rewrite: already-migrated URLs are left untouched', () => {
+  const migrated = { ...legacyRow, avatarUrl: 'https://media.jamesgunaca.com/img/testimonials/keep.webp', attachedImageUrl: null };
+  const built = buildFeed([migrated], { mediaMap: new Map([[`${legacyId}-avatar`, 'https://media.jamesgunaca.com/OTHER.webp']]) });
+  assert.equal(built.testimonials[0].avatarUrl, 'https://media.jamesgunaca.com/img/testimonials/keep.webp');
+});
+
+test('media rewrite: rows with no media are unaffected and need no manifest entry', () => {
+  const noMedia = { ...legacyRow, avatarUrl: null, attachedImageUrl: null };
+  const built = buildFeed([noMedia], { mediaMap: new Map() });
+  assert.equal(built.testimonials[0].avatarUrl, null);
+  assert.equal(built.testimonials[0].attachedImageUrl, null);
+});
+
+test('media rewrite: rewriting is idempotent', () => {
+  const map = new Map([[`${legacyId}-avatar`, 'https://media.jamesgunaca.com/img/testimonials/x-avatar.webp']]);
+  const once = buildFeed([{ ...legacyRow, attachedImageUrl: null }], { mediaMap: map });
+  const twice = buildFeed([{ ...legacyRow, attachedImageUrl: null, avatarUrl: once.testimonials[0].avatarUrl }], { mediaMap: map });
+  assert.equal(twice.testimonials[0].avatarUrl, once.testimonials[0].avatarUrl);
+});
+
+test('media rewrite: output still validates and leaks nothing', () => {
+  const map = new Map([
+    [`${legacyId}-avatar`, 'https://media.jamesgunaca.com/img/testimonials/x-avatar.webp'],
+    [`${legacyId}-attached`, 'https://media.jamesgunaca.com/img/testimonials/x-attached.png'],
+  ]);
+  const built = buildFeed([legacyRow], { mediaMap: map });
+  assertValid(built, schema, 'rewritten feed');
+  assert.ok(!JSON.stringify(built).includes('testimonial.to'));
+  assert.deepEqual(Object.keys(built.testimonials[0]).sort(), [...PUBLIC_FIELDS].sort());
 });

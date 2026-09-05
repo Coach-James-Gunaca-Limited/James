@@ -90,11 +90,36 @@ export function publicId(migrationKey) {
   return `t${createHash('sha256').update(migrationKey.trim()).digest('hex').slice(0, 16)}`;
 }
 
+/**
+ * The testimonial.to export wrote paragraph breaks as literal `<br>` tags, so
+ * 75 of them are sitting in the imported Message fields as text.
+ *
+ * The widget renders testimonial text as plain text and never as HTML, which is
+ * what keeps markup in a testimonial inert. That is not negotiable, so those
+ * tags would otherwise appear on the page as visible "<br><br>". Converting
+ * exactly this one tag into a real newline restores the author's intended
+ * paragraphing; the widget's `white-space: pre-line` then renders it.
+ *
+ * Deliberately narrow: only <br>, <br/> and <br />. Every other tag stays
+ * literal text and is escaped by the widget like any other character.
+ */
+export function normaliseLineBreaks(value) {
+  return value
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/\r\n?/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n');
+}
+
 const richText = (prop) =>
-  Array.isArray(prop?.rich_text) ? prop.rich_text.map((t) => t.plain_text ?? '').join('') : '';
+  Array.isArray(prop?.rich_text)
+    ? normaliseLineBreaks(prop.rich_text.map((t) => t.plain_text ?? '').join(''))
+    : '';
 
 const titleText = (prop) =>
-  Array.isArray(prop?.title) ? prop.title.map((t) => t.plain_text ?? '').join('') : '';
+  Array.isArray(prop?.title)
+    ? normaliseLineBreaks(prop.title.map((t) => t.plain_text ?? '').join(''))
+    : '';
 
 /** Trim, and collapse an empty string to null so optional fields are uniform. */
 const orNull = (value) => {
