@@ -31,7 +31,7 @@
   --jg-wol-gap: 20px;
   --jg-wol-pad: 20px;
   --jg-wol-col: 340px;
-  --jg-wol-btn-w: 600px;           /* matches the site's wide primary buttons */
+  --jg-wol-btn-w: 300px;           /* see the note on the load more button below */
 
   --jg-wol-font-head: 'nohemi-3qocai', 'Nohemi', system-ui, sans-serif;
   --jg-wol-font-quote: 'working-1sjdck', 'Working', 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -266,8 +266,12 @@
 /* Controls and states */
 .jg-wol div.jg-wol__foot { margin-top: 30px !important; text-align: center; }
 
-/* Full width up to --jg-wol-btn-w, so it reads at the same weight as the
-   site's own primary buttons rather than a small pill beside them. */
+/* Width matched to the site's own buttons by hand, because it cannot be
+   derived. A Squarespace button block carries `sqs-stretched`, whose rule is
+   just `flex: 1` — the button fills whatever width the block was drawn at in
+   the Fluid Engine, so its size lives in the page layout, not in any
+   stylesheet. The /testimonials "work with me" button measures about 300px.
+   Change --jg-wol-btn-w if that block is ever resized. */
 .jg-wol div.jg-wol__foot button.jg-wol__btn {
   width: 100%;
   max-width: var(--jg-wol-btn-w);
