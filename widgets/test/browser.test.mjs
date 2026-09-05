@@ -122,9 +122,16 @@ const shot = (name) => (SHOT_DIR ? `${SHOT_DIR}/shot-${name}.png` : undefined);
 
   /* -------------------------------------------------- ordering */
   const names = await page.locator('.jg-wol__name').allTextContents();
-  check('ordering: featured records render first', /Priya/.test(names[0]) && /Tom/.test(names[1]), names.slice(0, 3).join(' | '));
-
   const feed = await (await fetch(`${ORIGIN}/widgets/fixtures/preview-feed.json`)).json();
+
+  // Derived from the fixture rather than hardcoded, so renaming the synthetic
+  // people cannot silently turn this into a test of nothing.
+  const featuredNames = feed.testimonials.filter((t) => t.featured).map((t) => t.name);
+  const leading = names.slice(0, featuredNames.length).map((n) => n.replace(/\s*\(opens in a new tab\)\s*$/, ''));
+  check('ordering: featured records render first',
+    featuredNames.length > 0 && JSON.stringify(leading) === JSON.stringify(featuredNames),
+    `expected ${JSON.stringify(featuredNames)}, got ${JSON.stringify(leading)}`);
+
   const feedOrder = feed.testimonials.map((t) => (t.name || 'Anonymous').replace(/\s*\(opens.*$/, ''));
   const domOrder = names.map((n) => n.replace(/\s*\(opens in a new tab\)\s*$/, ''));
   check('ordering: DOM order matches JSON order exactly, no re-sorting',
