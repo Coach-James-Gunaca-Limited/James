@@ -86,6 +86,17 @@ and duplicate display names. The proof sheet pairs real names with real faces,
 so it is written to the git-ignored `.migration/` directory and must not be
 committed.
 
+### A note on line breaks
+
+Notion stores real line breaks in `Message`, not `<br>` tags. An audit of all 52
+rows found zero literal `<br>` in `Message` or `Raw Capture`. If you inspect the
+database through an MCP client you may see `<br>` in the output anyway: that is
+the rows-serialiser rendering line breaks in its own format, not what is stored.
+Read `Message` in SQL mode, or through the REST API, to see the real characters.
+
+The publisher still converts a literal `<br>` to a newline, as a guard for text
+arriving from other intake paths. Against the current data it is a no-op.
+
 **Ids are a SHA-256 of the Migration Key**, truncated to 16 hex characters
 (`t6918223b6be02717`). Stable across runs, collision-free, safe as a filename
 and an HTML id, and it does not publish the testimonial.to record id that every

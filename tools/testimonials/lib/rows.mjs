@@ -91,14 +91,18 @@ export function publicId(migrationKey) {
 }
 
 /**
- * The testimonial.to export wrote paragraph breaks as literal `<br>` tags, so
- * 75 of them are sitting in the imported Message fields as text.
+ * Tidy whitespace, and defensively convert a literal `<br>` to a real newline.
  *
- * The widget renders testimonial text as plain text and never as HTML, which is
- * what keeps markup in a testimonial inert. That is not negotiable, so those
- * tags would otherwise appear on the page as visible "<br><br>". Converting
- * exactly this one tag into a real newline restores the author's intended
- * paragraphing; the widget's `white-space: pre-line` then renders it.
+ * Notion itself stores real line breaks, not `<br>` tags: an audit of all 52
+ * imported rows found zero literal `<br>` in either Message or Raw Capture. An
+ * earlier version of this comment claimed otherwise, having mistaken the MCP
+ * rows-serialiser's rendering of line breaks for the stored data.
+ *
+ * The conversion is kept because the widget renders testimonial text as plain
+ * text and never as HTML, so a `<br>` arriving from some other intake path -
+ * someone pasting formatted text into the Notion form, say - would otherwise
+ * show up on the page as a visible "<br>". Against today's data it is a no-op;
+ * the collapsing of blank-line runs is what actually does work.
  *
  * Deliberately narrow: only <br>, <br/> and <br />. Every other tag stays
  * literal text and is escaped by the widget like any other character.
