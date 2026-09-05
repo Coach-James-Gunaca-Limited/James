@@ -83,6 +83,35 @@
 
 .jg-wol img { max-width: 100%; border: 0; }
 
+/* The widget's own <section> and <div> wrappers.
+   This site's stylesheet contains bare `section{margin-top:5em}`,
+   `section{margin:2em 0}`, `section{display:flex;align-items:center}` and
+   min-height rules up to 100vh. All of that landed on the widget's section and
+   added a viewport of blank space below the wall. `!important` is deliberate
+   here: this is a defensive reset for an embedded widget dropped into a CMS
+   whose selectors we cannot see or predict, and it applies only to the
+   widget's own wrappers. */
+.jg-wol section.jg-wol__section,
+.jg-wol div.jg-wol__foot,
+.jg-wol div.jg-wol__note,
+.jg-wol p.jg-wol__noteText {
+  display: block !important;
+  position: static !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  height: auto !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  align-items: normal !important;
+  justify-content: normal !important;
+  float: none !important;
+  background: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 /* Masonry. CSS columns let each card keep its natural height and the next card
    pull up into the gap, instead of every card in a row stretching to match the
    tallest one. */
@@ -202,7 +231,7 @@
 .jg-wol .jg-wol__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Controls and states */
-.jg-wol__foot { margin-top: 30px; text-align: center; }
+.jg-wol div.jg-wol__foot { margin-top: 30px !important; text-align: center; }
 
 /* Sized to sit alongside Squarespace's own primary buttons, which on this site
    compute to about 20px at weight 700 with 1rem/1.2rem padding. */
@@ -231,16 +260,16 @@
   border-radius: 4px;
 }
 
-.jg-wol__note {
+.jg-wol div.jg-wol__note {
   border-radius: var(--jg-wol-radius);
-  background: var(--jg-wol-card);
-  padding: 38px 22px;
+  background: var(--jg-wol-card) !important;
+  padding: 38px 22px !important;
   text-align: center;
   color: var(--jg-wol-muted);
   font-size: 1.1rem;
 }
-.jg-wol__note p { margin: 0 0 14px; }
-.jg-wol__note p:last-child { margin-bottom: 0; }
+.jg-wol p.jg-wol__noteText { margin: 0 0 14px !important; }
+.jg-wol p.jg-wol__noteText:last-child { margin-bottom: 0 !important; }
 
 .jg-wol li.jg-wol__skeleton {
   break-inside: avoid;
@@ -492,7 +521,7 @@
     mount.classList.add('jg-wol');
     applyTheme(mount, config.theme);
 
-    var section = el('section');
+    var section = el('section', 'jg-wol__section');
     section.setAttribute('aria-label', config.label);
     mount.appendChild(section);
 
@@ -521,7 +550,7 @@
       grid.textContent = '';
       foot.textContent = '';
       var note = el('div', 'jg-wol__note');
-      note.appendChild(el('p', null, message));
+      note.appendChild(el('p', 'jg-wol__noteText', message));
       if (actionLabel) {
         var button = el('button', 'jg-wol__btn jg-wol__btn--ghost', actionLabel);
         button.type = 'button';
