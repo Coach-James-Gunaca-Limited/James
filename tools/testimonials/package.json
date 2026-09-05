@@ -15,6 +15,7 @@
     "publish:dry": "node publish-json.mjs --dry-run",
     "publish": "node publish-json.mjs",
     "test:browser": "node ../../widgets/test/browser.test.mjs",
-    "preview": "npx --yes http-server ../.. -p 8099"
+    "preview": "npx --yes http-server ../.. -p 8099",
+    "verify:mapping": "node verify-mapping.mjs"
   }
 }

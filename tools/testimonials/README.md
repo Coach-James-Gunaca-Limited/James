@@ -47,6 +47,45 @@ changes instantly instead of after a publish, and there would be no committed
 JSON to keep in sync. Reasons not to: it adds a runtime dependency and a
 failure mode to a page that currently has neither.
 
+### Where the images live, and why not in Notion
+
+**Notion stays the source of truth for which photo belongs to whom.** The
+`Avatar URL` and `Attached Images` properties hold the URL; the bytes live in
+`img/testimonials/` in this repository.
+
+Uploading the images into Notion as file attachments instead does not work for
+this use case. Notion serves uploaded files from **signed URLs that expire**
+(on the order of an hour). A public web page cannot use those as image sources:
+the wall would render correctly when you tested it and show broken images to
+visitors soon after. External-URL properties, which is what these are, have no
+such expiry.
+
+So the split is:
+
+| | |
+|---|---|
+| Notion | who the testimonial is from, what it says, whether it may be published, and the URL of their photo |
+| This repository | the image bytes, served over the existing Pages CDN |
+
+**Each file is bound to one person by construction.** The filename is
+`t<sha256(Migration Key)[0:16]>-<avatar\|attached>.<ext>`, and the Migration Key
+is unique per row, so a file can only ever belong to the row it was downloaded
+from. There is no separate lookup table to drift out of sync, and nothing to
+re-match by hand.
+
+Verify it, including a visual check that testimonial.to attached the right face
+to the right person in its own export:
+
+```bash
+cd tools/testimonials && npm run verify:mapping
+# writes .migration/mapping-proof.html - open it and check each face vs its name
+```
+
+It reports unresolved assets, orphan files, files claimed by more than one row,
+and duplicate display names. The proof sheet pairs real names with real faces,
+so it is written to the git-ignored `.migration/` directory and must not be
+committed.
+
 **Ids are a SHA-256 of the Migration Key**, truncated to 16 hex characters
 (`t6918223b6be02717`). Stable across runs, collision-free, safe as a filename
 and an HTML id, and it does not publish the testimonial.to record id that every
@@ -224,6 +263,19 @@ Promise.all(m.assets.filter(a => a.newUrl).map(async a => {
 Note that step 1 only covers *approved* rows. A row still in `New` can hold a
 testimonial.to URL without it being visible in the feed.
 
+### Verify each photo is the right person
+
+```bash
+cd tools/testimonials && npm run verify:mapping
+```
+
+The machine check proves the mapping is internally consistent: filenames derive
+from the Migration Key, so a file cannot belong to a row other than the one it
+came from. It cannot prove testimonial.to's export was itself correct, so the
+command also writes `.migration/mapping-proof.html`, a contact sheet of every
+avatar and screenshot beside its person's name. Open it and check the faces.
+Last run: 34 expected, 34 present, 0 unresolved, 0 orphans, 0 shared.
+
 ---
 
 ## Testing
@@ -298,6 +350,7 @@ image is gone and the field should be cleared rather than repointed.
 |---|---|
 | `tools/testimonials/migrate-media.mjs` | Phase 2 — media rescue CLI |
 | `tools/testimonials/publish-json.mjs` | Phase 3 — feed publisher CLI |
+| `tools/testimonials/verify-mapping.mjs` | Checks every asset maps to one person; writes the proof sheet |
 | `tools/testimonials/lib/notion.mjs` | Notion client: 2025-09-03 data-source endpoints, pagination, throttling, backoff |
 | `tools/testimonials/lib/rows.mjs` | Row normalisation, public allowlist, ordering, id derivation |
 | `tools/testimonials/lib/assets.mjs` | Asset discovery, download, validation, naming |
