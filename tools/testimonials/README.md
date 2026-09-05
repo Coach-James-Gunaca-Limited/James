@@ -21,12 +21,19 @@ repository and is served from `https://media.jamesgunaca.com/img/testimonials/`.
 | testimonial.to subscription | **Active. Not cancelled.** |
 | Existing Squarespace embeds | **Untouched. No cutover has happened.** |
 | Media rescued | 34 of 34 (25 avatars, 9 attached images) |
-| Notion `Avatar URL` / `Attached Images` | **Still pointing at testimonial.to.** Repointing needs `--apply`, which needs `NOTION_TOKEN`. |
-| `testimonials/approved.json` | Published, `count: 0` |
-| Approved testimonials | 0 of 52 — all rows are still `Status = New` |
+| Notion `Avatar URL` / `Attached Images` | **Migrated.** 0 legacy URLs remain; 34 point at `media.jamesgunaca.com`, verified live. |
+| `testimonials/approved.json` | Live at `media.jamesgunaca.com/testimonials/approved.json`, 46 records |
+| Approved testimonials | 46 of 52 (`Approved for Use` + consent). The other 6 are `Needs Follow-up`. |
+| Squarespace | **Not yet done.** The widget has not been pasted anywhere. |
 
-The feed is empty because nothing has been approved yet, not because anything
-is broken. The widget renders its empty state until moderation runs.
+Everything is in place except the Squarespace paste and the testimonial.to
+cancellation, both of which are deliberate manual steps.
+
+The Notion swap was applied through the Notion MCP connector rather than
+`migrate-media.mjs --apply`, because the `NOTION_TOKEN` exported in
+`~/.zprofile` is rejected by Notion with `401 API token is invalid`. **Rotate
+that token** before relying on any of the scripts; the connector cannot replace
+them for a rerun, since it has no retries, verification or rollback manifest.
 
 ---
 
@@ -333,7 +340,7 @@ loads the real widget file, so what you see is what gets pasted.
 | A testimonial is missing from the wall | Approved but consent unchecked, or vice versa | Check both fields; the publisher's summary prints each count separately |
 | Moderation change not visible on the site | The feed is cached for up to an hour | Republish and push; or hard-refresh. `data-cache-busting="always"` disables caching for debugging |
 | Notion calls return 404 | Integration not shared with the database | Notion → database → Connections → add the integration |
-| Notion calls return 401 | Token wrong, expired or unset | Re-export `NOTION_TOKEN`; rotate if unsure |
+| Notion calls return `401 API token is invalid` | Token revoked, rotated, or belonging to another workspace. Hit here with a well-formed `ntn_` token in `~/.zprofile` | Rotate it and re-export. A token can look perfectly correct and still be dead; only an API call proves it |
 | Notion calls return 429 | Rate limited | The client already throttles to ~3 req/s and honours `Retry-After`. Just rerun |
 | An asset 404s on media.jamesgunaca.com | Committed but not pushed, or Pages not deployed | `git push`, wait, retry. `--apply` refuses to repoint Notion at an unreachable URL, so Notion stays correct |
 | Widget CSS looks wrong on Squarespace only | A Squarespace rule is winning on specificity | Every widget selector is scoped under `.jg-wol`; raise specificity there rather than adding a global override |
