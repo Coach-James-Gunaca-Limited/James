@@ -1,11 +1,24 @@
 {
   "meta": {
     "schemaVersion": 1,
-    "generatedAt": "2026-09-05T16:56:44.123Z",
-    "count": 46,
+    "generatedAt": "2026-10-22T09:19:48.231Z",
+    "count": 47,
     "source": "Notion — Testimonials"
   },
   "testimonials": [
+    {
+      "id": "t9bf7b7dc6e495e79",
+      "name": "Adam Goodall",
+      "message": "James' structure, tools, accountability and guidance were incredibly helpful ingredients to the job search. Through his tools and guides my CV was converting to interview on cold applications for the first time. Coaching throughout the process from someone who's seen it all helped me enter the room more confident and effective. We managed to go from a cold start to job offer in 4 months, 15 applications, 6 processes, alongside the day job. James provides honest and constructive feedback throughout, and helps keep the momentum going when it counts. Thanks for your help James.",
+      "roleTitle": "Product Leader",
+      "company": null,
+      "avatarUrl": "https://publishing-media.jamesgunaca.com/testimonials/084dd79f1d57b20696a12c425f6eaa835c6684b94751a153dd3d535b1569c4c1.jpg",
+      "attachedImageUrl": null,
+      "socialLink": "https://www.linkedin.com/in/adamjgoodall/",
+      "testimonialFormat": "Written",
+      "featured": true,
+      "dateReceived": "2026-10-21"
+    },
     {
       "id": "tf66a8408555dba77",
       "name": "Antoine",
