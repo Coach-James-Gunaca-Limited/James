@@ -1,8 +1,8 @@
 {
   "meta": {
     "schemaVersion": 1,
-    "generatedAt": "2026-10-22T09:19:48.231Z",
-    "count": 47,
+    "generatedAt": "2026-11-02T14:49:24.846Z",
+    "count": 48,
     "source": "Notion — Testimonials"
   },
   "testimonials": [
@@ -18,6 +18,19 @@
       "testimonialFormat": "Written",
       "featured": true,
       "dateReceived": "2026-10-21"
+    },
+    {
+      "id": "t7cd5b35f48449c11",
+      "name": "Chris Munton",
+      "message": "Product Sphere provides practical support, useful tools and a great community for Product people navigating the job market to find their next role. I’ve valued the interview practice, shared experiences and, more recently, the conversations around AI and how Product Management is changing. James’ practical use of research and data helps take some of the guesswork out of job searching, applications and interviews, giving me more confidence, perspective and a clearer sense of direction and purpose.",
+      "roleTitle": "Senior Product Manager",
+      "company": null,
+      "avatarUrl": null,
+      "attachedImageUrl": null,
+      "socialLink": "https://www.linkedin.com/in/cmunton/",
+      "testimonialFormat": "Written",
+      "featured": false,
+      "dateReceived": "2026-11-02"
     },
     {
       "id": "tf66a8408555dba77",
